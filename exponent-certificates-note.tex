@@ -1,0 +1,436 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{convention}[definition]{Convention}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\eng}{\texttt{certify.py}}
+
+\title{Exponent Thresholds as Exact Linear-Programming Facets:\\
+Certificates with Problem Instances as Data}
+\author{Michael M.\ Ross\\
+\small\href{mailto:michaelmross@cantab.net}{michaelmross@cantab.net}}
+\date{\today\\[2pt]\small Draft}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Many published exponent thresholds in analytic number theory arise as the
+optimum of a finite competition among estimates, each valid on a
+rational-linear window of range exponents. We describe a small, general
+tool that certifies such thresholds exactly. A problem instance is a data
+file declaring block variables, slice parameters, decomposition pieces,
+and tools encoded as negated admissibility conditions. The engine
+enumerates failure polytopes and computes optima by exhaustive vertex
+enumeration over $\Q$, with no floating point. A run is a certificate
+only when its output is checked against independently declared expected
+values taken from the source publication. We give two worked instances.
+The first reproduces the threshold profile of a recent conditional
+reduction for primes in the intervals $[4n^2-n,4n^2+n]$. The second
+transcribes Rivat and Sargos's theorem on Piatetski-Shapiro primes and
+certifies three published rationals from one atom table: the main
+threshold $c<2817/2426$, the intermediate $c<441/380$, and the prior
+record $c<15/13$, the latter two recovered as tool-removal ablations,
+each with the witness collapsing onto the predicted facet. We state
+precisely what such certificates do and do not establish, using the
+companion paper of Rivat and Wu as the boundary case: its
+exponential-sum layer is certifiable, while its sieve positivity layer,
+which rests on numerical integration of Buchstab functions, is not.
+\end{abstract}
+
+\section{Introduction}
+
+A recurring pattern in analytic number theory is the exponent record: a
+rational number such as $2817/2426$ or $243/205$ marking how far a
+method reaches, produced by balancing finitely many estimates over the
+ranges of grouped variables. In the cleanest cases the record is
+literally the optimum of a finite system of linear inequalities with
+rational coefficients. The optimum is stated in the paper, and the
+system is scattered through it: one window condition per lemma, one cap
+per error term, a design choice fixing a parameter here, a combinatorial
+identity imposing a ceiling there. Verifying the record means
+reassembling that system and checking the arithmetic, which referees do
+by hand, once.
+
+This note describes a tool that makes the reassembled system a
+first-class, executable object. The engine, \eng, is problem-agnostic
+and fits in a few hundred lines. Everything problem-specific lives in a
+JSON instance file: variables, parameters, decomposition pieces, and
+tools, with every coefficient an exact rational. The engine enumerates
+the polytopes on which every tool fails simultaneously and computes
+exact optima by vertex enumeration over $\Q$. Its output is compared
+against expected values declared in the instance and taken from the
+source publication, and the run ends with a verdict. We call a passing
+run an \emph{exponent certificate} (Definition~\ref{def:cert}). The
+same machinery answers a second question at essentially no cost: given
+a hypothetical new estimate, encoded as one more tool, does the
+threshold move, and where does the binding constraint migrate? A
+published record thus acquires an executable acceptance test for
+candidate improvements.
+
+Two instances accompany the tool. The first certifies the threshold
+profile of a conditional reduction for primes in square-centered
+intervals \cite{ross-reduction,ross-inventory}, reproducing the profile
+$\zeta(\gamma)=(6-5\gamma)/4$, its witness, and a tool-ablation
+byproduct. The second transcribes Rivat and Sargos
+\cite{rivat-sargos} and is the better advertisement for the method: a
+single atom table certifies three published rationals, two of them as
+ablations, all attained on the predicted facet
+(Section~\ref{sec:rs}). The companion paper of Rivat and Wu
+\cite{rivat-wu} supplies the boundary of scope
+(Section~\ref{sec:limits}).
+
+\section{The certification framework}\label{sec:framework}
+
+\begin{definition}[Instance]\label{def:instance}
+An \emph{instance} consists of block variables
+$x=(x_1,\dots,x_n)$, slice parameters $\theta=(\theta_1,\dots,\theta_k)$,
+a designated objective coordinate $x_j$, a finite set of \emph{tools}, a
+finite set of \emph{pieces}, a finite list of rational slice values, and
+declared expected values. A \emph{constraint} is an inequality
+$a\cdot x\le b_0+b\cdot\theta$ with $a\in\Q^n$, $b_0\in\Q$,
+$b\in\Q^k$. A tool is the negation of an estimate's admissibility
+condition, written in disjunctive normal form: a list of \emph{fail
+options}, each a conjunction of constraints, the tool failing at $x$
+when at least one option holds. A piece is a pair (region, applicable
+tools), the region being a bounded rational-linear set of block
+coordinates that the piece must cover.
+\end{definition}
+
+Fix a slice $\theta$. A \emph{total-failure witness} in a piece is a
+point of its region at which every applicable tool fails. The engine
+finds witnesses by distributing the disjunctions: for each choice of
+one fail option per tool it forms the polytope cut out by the region
+together with the chosen fail atoms, and it examines every vertex,
+solving each $n$-subset of constraint rows exactly over $\Q$. Two
+certified statement types are supported.
+
+\emph{Minimization mode.} The certified object is
+$\zeta(\theta)=\min x_j$ over all witnesses at slice $\theta$: the
+first level at which total failure occurs. The expected value is a
+closed form, affine in $\theta$ with an optional floor.
+
+\emph{Coverage mode.} The certified object is witness existence per
+slice. The expected value is a threshold $\theta^*$ together with the
+assertion that a witness exists exactly for $\theta\le\theta^*$.
+
+\begin{convention}[Facet convention]\label{conv:facet}
+All inequalities are closed, and the $\varepsilon$, $\eta$, $\kappa$
+margins of the source arguments are dropped. Certified thresholds are
+therefore attained: at the critical slice the witness set collapses
+onto the binding facet, and the engine reports the facet point. Reported
+thresholds are the suprema of failing slices, matching the usual
+convention that the analytic result holds on the open side.
+\end{convention}
+
+\begin{definition}[Exponent certificate]\label{def:cert}
+An \emph{exponent certificate} for a published threshold is a run of
+the engine on a declared instance whose computed values match, exactly
+and in $\Q$, expected values declared in the instance and taken from
+the source publication, for every slice and every declared ablation.
+\end{definition}
+
+The match requirement is what separates certification from
+computation. A run with no declared expected values computes a profile
+but certifies nothing, and the engine says so
+(Section~\ref{sec:verdicts}).
+
+\section{The soundness contract}\label{sec:verdicts}
+
+The engine certifies the arithmetic of the encoded system exactly. It
+does not certify that the encoding is faithful to the source paper.
+Fidelity is an obligation on the instance author, discharged in the
+instance file itself, which carries per-tool provenance to numbered
+statements of the source and a documented list of encoding decisions.
+The discipline follows the sandwich pattern of \cite{ross-inventory}.
+Deliberate relaxations are recorded with their direction: omitting a
+tool condition can only make failure easier, so certified thresholds
+are conservative, and a hand-proved coverage argument closes the gap
+on the relevant region. Design choices of the source, such as a
+parameter the paper fixes rather than quantifies, are recorded as
+substitutions, not variables. Window edges that the source covers by
+construction, through $\eta$-shifted endpoints, carry no fail atom;
+only genuine caps do.
+
+A run ends in one of three verdicts. \textsc{Certificate passed} means
+every computed value matches its declared expectation, which is the
+reproduction of a published result. \textsc{Certificate failed} means
+at least one mismatch, which is an audit finding: either a
+transcription error, to be fixed and rerun, or a genuine discrepancy
+with the source, to be investigated by hand. \textsc{Nothing
+certified} means the instance declared no expected values, which is
+the exploration regime: the acceptance-test workflow of
+Section~\ref{sec:acceptance} produces predictions awaiting theorems,
+not checks against them. Keeping the third verdict distinct prevents
+an exploratory run from masquerading as a certificate.
+
+The transcription of an instance from a paper is mechanical enough to
+delegate, to a careful reader or to an AI assistant working under the
+protocol distributed with the tool \cite{repo}, because the acceptance
+test is self-checking. An unfaithful atom table has no mechanism for
+reproducing the source's exact published rationals, let alone several
+of them simultaneously under ablation. The judgment calls concentrate
+in two places: distinguishing genuine caps from design choices, and
+detecting where the source leaves the rational-linear regime. Those
+calls are audited by a human against the paper. The arithmetic audits
+itself.
+
+\section{Instance A: a square-interval tail decomposition}
+\label{sec:jn}
+
+The first instance transcribes the constraint system of
+\cite{ross-reduction}, whose companion inventory \cite{ross-inventory}
+documents the encoding in full. The block variables are three exponents
+$(\mu,\eta,\beta)$ of a bilinear decomposition, the slice parameter is
+$\gamma$, and the toolkit comprises the Robert--Sargos trilinear
+estimate \cite{robert-sargos} in four groupings, the Fouvry--Iwaniec
+monomial estimate \cite{fouvry-iwaniec} in three, and an elementary
+tool combining Kuzmin--Landau with the exponent pairs $(1/2,1/2)$ and
+$(1/6,2/3)$. Two pieces carry the type I and type II ranges.
+
+In minimization mode the engine reproduces the declared profile
+$\zeta(\gamma)=(6-5\gamma)/4$ on $\gamma\in[1,6/5]$ at six slices,
+exactly. At $\gamma=11/10$ the reported witness is
+$(\mu,\eta,\beta)=(11/20,9/40,1/8)$, on the facet $4\beta+5\gamma=6$,
+with the binding fail atom of each tool named in the output, matching
+the inventory's hand-derived witness. A declared ablation removes the
+three Fouvry--Iwaniec groupings and certifies that the profile is
+unchanged, reproducing the inventory's byproduct that the coverage
+argument does not need that estimate. The full run, profile plus
+ablation, takes about four seconds.
+
+\section{Instance B: Rivat--Sargos, three rationals from one table}
+\label{sec:rs}
+
+Rivat and Sargos \cite{rivat-sargos} prove
+$\pi_c(x)\sim x/(c\log x)$ for $1<c<2817/2426$, where $\pi_c(x)$
+counts $n\le x$ with $\lfloor n^c\rfloor$ prime. Writing
+$\gamma=1/c$ and $\nu=\log_x N$ for the length of the distinguished
+range, their argument runs Heath-Brown's identity \cite{heath-brown-id}
+with $\ell=5$ and the design choice $\alpha=1-\gamma$, splitting the
+required coverage into a type II window, a type I requirement, and a
+residual type $\mathrm{I}'$ window $(2(1-\gamma),1/3]$ on which the
+paper's new estimate acts. Every condition in the critical path is
+rational-affine in $(\nu,\gamma)$. The type II tool of Heath-Brown
+\cite{heath-brown-ps} caps at $\nu\le5\gamma-4$. The thesis type I
+bound requires $\nu\ge3(1-\gamma)$. The new estimate, at
+Th\'eor\`eme~1 strength, caps at
+$\nu\le(939\gamma-761)/143$ together with $\nu\le\gamma-1/2$,
+$\nu\le3\gamma-2$, and $\nu\le(5\gamma+9)/33$, and at Th\'eor\`eme~2
+strength, before the improved fifth-derivative criterion of Sargos
+\cite{sargos-crit}, at $\nu\le(147\gamma-119)/23$ and
+$\nu\le(597\gamma-469)/133$ in place of the first and last caps.
+
+The instance runs in coverage mode with both strengths present as
+separate tools and two declared ablations. The certified results are
+collected in Table~\ref{tab:rs}. In each row the threshold is an exact
+rational, the witness at threshold sits at $\nu=1/3$ exactly, and the
+threshold matches a rational stated in the source. The base toolkit
+certifies Th\'eor\`eme~1. Removing the Th\'eor\`eme~1 tool certifies
+Th\'eor\`eme~2. Removing both new tools leaves Heath-Brown covering
+type $\mathrm{I}'$ up to $\nu=5\gamma-4$, and the certified threshold
+is $\gamma^*=13/15$, that is $c<15/13$: precisely the prior record of
+Liu and Rivat \cite{liu-rivat} that the paper identifies with the
+trivial estimate of its central sum. Eighteen slice checks pass, and
+the run takes under a second.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+Toolkit & Threshold $\gamma^*$ & Statement & Source claim\\
+\midrule
+Full & $2426/2817$ & $c<2817/2426$ & Th\'eor\`eme 1\\
+Remove T1 tool & $380/441$ & $c<441/380$ & Th\'eor\`eme 2\\
+Remove both new tools & $13/15$ & $c<15/13$ & Liu--Rivat baseline\\
+\bottomrule
+\end{tabular}
+\caption{Certified thresholds for the Rivat--Sargos instance. Each is
+an exact facet of the declared linear system, with the witness at
+threshold at $\nu=1/3$. The two ablation rows are the paper's own
+internal structure, recovered by tool removal.}
+\label{tab:rs}
+\end{table}
+
+The table settles a small point of record. The secondary literature
+transmits the Rivat--Sargos threshold in two versions, $2817/2426$ and
+$2817/2425$. The paper states $2817/2426$, and the certificate
+confirms that $2817/2426$ is the exact facet of the paper's own
+system: at $\gamma=2426/2817$ the binding cap satisfies
+$(939\gamma-761)/143=1/3$ identically.
+
+\section{The acceptance-test workflow}\label{sec:acceptance}
+
+Because tools are data, a candidate estimate is one more JSON stanza.
+Adjoining it and rerunning answers, in seconds and in exact
+arithmetic, whether the candidate moves the threshold and which
+constraint binds next. In an experiment on Instance A, a fabricated
+strengthening of one Robert--Sargos window lifted the profile at every
+interior slice and migrated the binding piece from type II to the
+elementary type I facet, locating the next obstruction without any
+analysis. Such runs end in the third verdict, \textsc{nothing
+certified}, and their outputs are predictions conditional on the
+candidate becoming a theorem. The workflow inverts the usual economics
+of checking: the months-long question ``would estimate $X$ improve
+result $Y$'' becomes a transcription plus a run, and the published
+record ships with a machine-checkable specification of what any
+improvement must supply.
+
+\section{What is not certified}\label{sec:limits}
+
+Certification decides membership in the reachable set of a declared
+toolkit, exactly, and decides nothing beyond it. No enumeration over
+type I and type II atoms can manufacture a new atom, and for
+prime-detection problems there is a principled obstruction behind
+this: measures agreeing on all such data may disagree about primes,
+which is the parity phenomenon, circumvented to date only by estimates
+exploiting structure specific to a sequence
+\cite{friedlander-iwaniec-parity}. A certificate that a threshold is
+optimal for its toolkit is a certified impossibility for
+rearrangement, and simultaneously a specification, through its active
+facet, of the estimate that any crossing must supply.
+
+The scope boundary is visible within a single problem and a single
+year. Rivat and Wu \cite{rivat-wu} prove
+$\pi_c(x)\gg x/(c\log x)$ for $c\le243/205$. Their exponential-sum
+layer is certifiable in exactly the present sense: the windows of
+their Corollaries 1 and 2, with endpoints $3-3\gamma$,
+$(61\gamma-49)/11$, $(60-61\gamma)/11$, and $3\gamma-2$, are
+rational-affine. Their sieve layer is not. The threshold $243/205$ is
+the point at which a function $F(\lambda)$, a sum of two- to
+four-dimensional integrals of the Buchstab function over simplex
+domains, remains provably positive under symbolic and numerical
+integration in Maple, with domains manually enlarged for
+tractability. That is a different kind of computation, with different
+verification needs, and an instance file must not silently span the
+boundary between the two. The correct posture is to certify the linear
+layer and state where it ends.
+
+For the same reason, this tool is not formal verification. A
+certificate checks that a declared linear system reproduces published
+rationals under exact arithmetic. It does not verify the analysis
+justifying the atoms, which is what a proof assistant would demand.
+The contract here is deliberately lighter, and the per-atom provenance
+required of instances is the bridge for anyone who wants to carry a
+certified system further.
+
+\section{Related work}\label{sec:related}
+
+The nearest neighbors are the systematizations of exponent
+information: the analytic number theory exponent database of Tao,
+Trudgian, and Yang \cite{antedb} and the automated optimization of
+exponent pairs \cite{trudgian-yang}, which derive records by searching
+within known estimates, and the Polymath~8 project \cite{polymath8},
+which optimized a fixed argument's numerology at scale. The present
+tool is complementary to these: it certifies published thresholds as
+exact facets of declared systems, recovers a paper's internal theorem
+structure by ablation, and attaches an executable acceptance test to a
+record. Instances are small data files, so certified systems could in
+principle be contributed to, or checked against, a database of the
+kind just cited.
+%% TODO (MMR): tone and completeness of this section to taste; add or
+%% trim citations, e.g. computer-assisted optimization in sieve theory,
+%% verified numerics traditions, interval-arithmetic work.
+
+\section{Availability}\label{sec:avail}
+
+The engine, the schema with the transcription protocol, and both
+instance files are available at \cite{repo}. The engine is a single
+Python file with no dependencies beyond the standard library, using
+\texttt{fractions.Fraction} throughout. Runs reported here complete in
+seconds on commodity hardware. A frozen release with a DOI will
+accompany this note.
+%% TODO (MMR): create github.com/michaelmross/exponent-certificates,
+%% mint Zenodo DOI, fill in below.
+
+%% TODO (MMR): acknowledgments to taste, including AI-assistance
+%% disclosure per your usual practice.
+
+\begin{thebibliography}{99}
+
+\bibitem{ross-reduction}
+M.~M.~Ross,
+\emph{A one-hypothesis reduction for primes in $[4n^2-n,\,4n^2+n]$},
+Zenodo (2026). \url{https://doi.org/10.5281/zenodo.21220096}
+
+\bibitem{ross-inventory}
+M.~M.~Ross,
+\emph{Constraint inventory for the $J_n$ tail decomposition},
+repository document, \url{https://github.com/michaelmross/Legendre}.
+
+\bibitem{rivat-sargos}
+J.~Rivat and P.~Sargos,
+\emph{Nombres premiers de la forme $\lfloor n^c\rfloor$},
+Canad. J. Math. \textbf{53} (2001), 414--433.
+
+\bibitem{rivat-wu}
+J.~Rivat and J.~Wu,
+\emph{Prime numbers of the form $[n^c]$},
+Glasgow Math. J. \textbf{43} (2001), 237--254.
+
+\bibitem{heath-brown-id}
+D.~R.~Heath-Brown,
+\emph{Prime numbers in short intervals and a generalized Vaughan
+identity}, Canad. J. Math. \textbf{34} (1982), 1365--1377.
+
+\bibitem{heath-brown-ps}
+D.~R.~Heath-Brown,
+\emph{The Pjatecki\u{\i}--\v{S}apiro prime number theorem},
+J. Number Theory \textbf{16} (1983), 242--266.
+
+\bibitem{sargos-crit}
+P.~Sargos,
+\emph{Un crit\`ere de la d\'eriv\'ee cinqui\`eme pour les sommes
+d'exponentielles}, Bull. London Math. Soc. \textbf{32} (2000),
+398--402.
+
+\bibitem{liu-rivat}
+H.-Q.~Liu and J.~Rivat,
+\emph{On the Pjateckii-Shapiro prime number theorem},
+Bull. London Math. Soc. \textbf{24} (1992), 143--147.
+
+\bibitem{robert-sargos}
+O.~Robert and P.~Sargos,
+\emph{Three-dimensional exponential sums with monomials},
+J. reine angew. Math. \textbf{591} (2006), 1--20.
+
+\bibitem{fouvry-iwaniec}
+E.~Fouvry and H.~Iwaniec,
+\emph{Exponential sums with monomials},
+J. Number Theory \textbf{33} (1989), 311--333.
+
+\bibitem{friedlander-iwaniec-parity}
+J.~Friedlander and H.~Iwaniec,
+\emph{Using a parity-sensitive sieve to count prime values of a
+polynomial}, Proc. Nat. Acad. Sci. USA \textbf{94} (1997), 1054--1058.
+
+\bibitem{antedb}
+T.~Tao, T.~Trudgian, and A.~Yang,
+\emph{Database of known results on analytic number theory exponents},
+\url{https://github.com/teorth/expdb}.
+%% TODO (MMR): confirm preferred citation form for the ANTEDB.
+
+\bibitem{trudgian-yang}
+T.~S.~Trudgian and A.~Yang,
+\emph{Toward optimal exponent pairs},
+arXiv:2306.05599.
+
+\bibitem{polymath8}
+D.~H.~J.~Polymath,
+\emph{New equidistribution estimates of Zhang type},
+Algebra Number Theory \textbf{8} (2014), 2067--2199.
+
+\bibitem{repo}
+M.~M.~Ross,
+\emph{exponent-certificates: exact certification of exponent
+thresholds, instances as data},
+\url{https://github.com/michaelmross/exponent-certificates}.
+
+\end{thebibliography}
+
+\end{document}

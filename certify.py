@@ -247,7 +247,10 @@ def run_coverage(inst, args):
                 for p, r in found.items()) or "-"
             tag = ""
             if expect_thr is not None:
-                want = sv[0] <= expect_thr
+                direction = (inst.spec.get("expected_coverage") or {}).get(
+                    "witness_iff", "le")
+                want = (sv[0] >= expect_thr if direction == "ge"
+                        else sv[0] <= expect_thr)
                 match = exists == want
                 state["checks"] += 1
                 state["fails"] += 0 if match else 1
@@ -259,8 +262,11 @@ def run_coverage(inst, args):
                   f"{'FAILURE WITNESS' if exists else 'covered':>15}  "
                   f"({detail}){tag}")
         if expect_thr is not None:
+            d = (inst.spec.get("expected_coverage") or {}).get(
+                "witness_iff", "le")
             print(f"  => checked against threshold {expect_thr} "
-                  f"(witness iff slice <= threshold)")
+                  f"(witness iff slice {'>='  if d == 'ge' else '<='} "
+                  f"threshold)")
 
     report(expect_thr=base_thr)
     if inst.ablations and not args.no_ablations:

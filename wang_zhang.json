@@ -1,0 +1,96 @@
+{
+ "name": "Wang-Zhang (Czech. Math. J. 2023): divisor function over PS sequences, threshold c* = 6/5 (beta* = 5/6)",
+ "mode": "coverage",
+ "comment": "Transcription of Wang-Zhang, 'On the divisor function over Piatetski-Shapiro sequences', Czechoslovak Math. J. 73 (2023) 613-620. FEASIBILITY instance in the free design parameter j = log_M J (Vaaler truncation, paper's choice J = M^{1-beta+eta} at (3.3)); slice parameter beta = 1/c, since the system is affine in beta and not in c. Witness = admissible j (proof succeeds); 'covered' = infeasible. Atoms: j >= 1-beta and j <= beta from the delta-sum bound S4 (Lemma 2.3 with the paper's target M^{beta}); j <= 3/8 - beta/4 from Jutila Lemma 2.4 summed over h ~ H at worst H = M^j (K <= M^{1/2+beta/3} H^{4/3} <= M^1); beta >= 3/4 is the vacuity of Jutila's lower window F >> M^{3/4} at h = 1, which is the paper's implicit intermediate condition 'for c < 4/3' made explicit; j <= 3/2 - beta is the window's upper edge at h ~ M^j. Conventions: eta/epsilon margins dropped, closed inequalities, dyadic worst blocks per the paper's displays. Certified: feasible iff beta >= 5/6 (c <= 6/5), the exact facet of (j >= 1-beta) against (j <= 3/8 - beta/4), with the feasible set collapsing to j = 1/6 at threshold -- through which the paper's J-formula passes exactly. The c < 4/3 window condition and the S4 condition beta > 1/2 are certified slack at the facet.",
+ "variables": [
+  "j"
+ ],
+ "parameters": [
+  "beta"
+ ],
+ "objective": "j",
+ "tools": {},
+ "pieces": {
+  "design-window": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "-1"
+     ],
+     [
+      "-1",
+      "1"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "0",
+      "1"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "3/8",
+      "-1/4"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "3/2",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "0"
+     ],
+     [
+      "-3/4",
+      "1"
+     ]
+    ],
+    [
+     [
+      "0"
+     ],
+     [
+      "1",
+      "-1"
+     ]
+    ]
+   ],
+   "tools": []
+  }
+ },
+ "slices": [
+  "7/9",
+  "4/5",
+  "33/40",
+  "5/6",
+  "6/7",
+  "9/10"
+ ],
+ "expected_coverage": {
+  "threshold": "5/6",
+  "witness_iff": "ge",
+  "note": "Theorem 1.1: asymptotic holds for 1 < c < 6/5, i.e. beta > 5/6; closed at the facet, so witness exists iff beta >= 5/6."
+ }
+}

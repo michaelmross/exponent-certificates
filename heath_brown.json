@@ -1,0 +1,211 @@
+{
+ "name": "Heath-Brown 1983 PS primes: coverage threshold gamma* = 662/755 (c < 755/662)",
+ "mode": "coverage",
+ "comment": "Transcription of D. R. Heath-Brown, 'The Pjateckii-Sapiro Prime Number Theorem', J. Number Theory 16 (1983) 242-266. Variable nu = log_N Y (size of the special factor), parameter gamma = 1/c. Architecture: the five-variable Vaughan-type identity (Lemma 3, parameters u < v < z with z >= 4u^2, 64 z^2 u <= x, v^3 >= 32x) routes every configuration either to a type I sum K (factor Y >= z, Lemmas 7-9) or to a type II sum L (factor in [u, v/2], Lemma 4). Design substitutions, all from the paper: u = N^{1-gamma} and v = N^{5gamma-4} are Lemma 4's window edges taken at full strength (p. 257); z = N^{e(gamma)} with e = (331-362 gamma)/31 is the minimum Lemma 9 admits at the paper's exponent pair - the paper itself substitutes this z in its final condition '1 - gamma + 2e < 1' (p. 262, p. 265), and the certified threshold is invariant under relaxing z upward, since any larger z only raises the complement window's floor 1-2 zeta further above u. Exponent pair (p,q) = BABA^2BA^2B(0,1) = (11/53, 33/53) (p. 265), verified by exact A/B-process computation; 4p+1-2q = 31/53 > 0 as Lemma 7 requires. PIECES. (i) typeII_complement: in Lemma 3's proof (pp. 252-253), when no single factor lands in [u, v/2], a pair lands in (v/2, z)^2 and the complementary product CDE ranges over (x/(64 z^2), 4x v^{-2}), exponent window [1-2e, 9-10gamma], which the type II estimate must contain in its own window [1-gamma, 5gamma-4]. Lower containment is the paper's last condition 1-gamma+2e <= 1, i.e. gamma >= 662/755; upper containment is v^3 >= 32x, i.e. gamma >= 13/15 - both of (26)'s partners appear as facets of this one piece. The Sigma_3' analysis (p. 253, conditions (11)) generates the same two inequalities via the ABD product directly and is merged here. (ii) typeI: region nu in [e, 1], toolkit = Lemma 8's auxiliary bound plus Lemma 7's exponent-pair terms at (11/53, 33/53). VERIFIED FINDING: this piece yields NO witness at any certified slice, i.e. Lemma 9's printed conditions gamma > 737/874 = (11+5p+3q)/(14+6p+2q) and gamma > 5/6 are strictly slack at the paper's design. Reason, exact: for gamma <= 569/662 the region floor e already exceeds the Lemma 8 split 3/2-gamma, so the auxiliary bound alone covers [z, N]; for gamma >= 569/662 the seam closes because 569/662 > 737/874 > 5/6. The value 737/874 is the crossing of Lemma 7's term C cap nu = (362 gamma - 256)/75 with the split line nu = 3/2-gamma, and that crossing sits below the region floor throughout the certified range; it becomes load-bearing only under the no_exponent_pairs / no_auxiliary_bound ablations. Consistently, the paper's binding condition is the LAST one (662/755), with 13/15 the runner-up facet: 662/755 > 13/15 > 737/874 > 5/6. CONVENTIONS (sandwich discipline): (a) all eta margins dropped, closed inequalities, thresholds attained on facets; (b) the direct type II case (single factor in [u, v/2]) is covered by construction - u, v ARE the estimate's window edges - so it carries no piece; (c) the type I floor nu = e is a constructed edge (z is chosen so Lemma 7's term A, nu >= e, is admissible on [z, N]), so term A carries no fail atom; dropping this convention would plant a spurious facet witness at nu = e for gamma >= 569/662. SCOPE. The certificate covers the linear layer on gamma <= 455/517: at (11/53, 33/53) the paper's condition (27), e > 5gamma-4, is a genuine UPPER bound gamma <= 455/517, beyond which the fixed design z = N^e violates Lemma 3's ordering z > v (and beyond 481/543 the paper's remark e >= 1/3 fails, exiting Lemma 7's validity Y >= N^{1/3}). The theorem's full range up to c > 1 rests on the standard flexibility of shrinking the (u, v) window for gamma near 1, which the printed conditions (26)-(27) do not themselves express; slices therefore stop at 881/1000 < 481/543. The binding facet at the published threshold is the identity's geometry (u z^2 <= x against the type II floor), not any single estimate.",
+ "variables": [
+  "nu"
+ ],
+ "parameters": [
+  "gamma"
+ ],
+ "objective": "nu",
+ "tools": {
+  "L_typeII": {
+   "provenance": "Lemma 4 (p. 257): L << N^{1-eta/7} for u = N^{1-gamma+eta}, v = N^{5gamma-4-eta}, valid for gamma >= 1/2 + eta; window N^{1-gamma+eta} <= Y <= min(N^{5gamma-4-eta}, N^{2gamma-1-eta}) = N^{5gamma-4-eta} since gamma <= 1. Genuine caps: nu >= 1-gamma, nu <= 5gamma-4, gamma >= 1/2. Fail = below the lower edge, above the upper edge, or gamma <= 1/2.",
+   "fail_options": [
+    [
+     [
+      [
+       "1"
+      ],
+      [
+       "1",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "4",
+       "-5"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "0"
+      ],
+      [
+       "1/2",
+       "-1"
+      ]
+     ]
+    ]
+   ]
+  },
+  "K_aux": {
+   "provenance": "Lemma 8 (p. 262), from Lemma 1 applied to the inner sum of (18): K << (log N)^9 {N^{1-gamma} + N^{5/2-gamma} Y^{-1}}, adequate iff nu >= 3/2 - gamma. Sole fail atom: nu <= 3/2 - gamma.",
+   "fail_options": [
+    [
+     [
+      [
+       "1"
+      ],
+      [
+       "3/2",
+       "-1"
+      ]
+     ]
+    ]
+   ]
+  },
+  "K_EP": {
+   "provenance": "Lemma 7 (p. 261) at (p,q) = (11/53, 33/53): K << (log N)^11 N^{-gamma} {N^{693/362} Y^{-31/362} + N^{3/2} Y^{1/2} + N^{309/181} Y^{75/362}}, valid for Y >= N^{1/3}. Caps: nu >= 1/3 (validity), term B nu <= 2gamma-1, term C nu <= (362gamma-256)/75. Term A's cap nu >= (331-362gamma)/31 = e is the constructed edge at z (z is chosen to make term A admissible on the whole piece; comment, convention c) and carries no fail atom. Fail = nu <= 1/3, or nu >= 2gamma-1, or nu >= (362gamma-256)/75.",
+   "fail_options": [
+    [
+     [
+      [
+       "1"
+      ],
+      [
+       "1/3",
+       "0"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "1",
+       "-2"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "256/75",
+       "-362/75"
+      ]
+     ]
+    ]
+   ]
+  }
+ },
+ "pieces": {
+  "typeII_complement": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "-1"
+     ],
+     [
+      "631/31",
+      "-724/31"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "9",
+      "-10"
+     ]
+    ]
+   ],
+   "tools": [
+    "L_typeII"
+   ]
+  },
+  "typeI": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "-331/31",
+      "362/31"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "1",
+      "0"
+     ]
+    ]
+   ],
+   "tools": [
+    "K_aux",
+    "K_EP"
+   ]
+  }
+ },
+ "slices": [
+  "5/6",
+  "737/874",
+  "569/662",
+  "43/50",
+  "13/15",
+  "219/250",
+  "662/755",
+  "877/1000",
+  "439/500",
+  "22/25",
+  "455/517",
+  "2201/2500",
+  "881/1000"
+ ],
+ "expected_coverage": {
+  "threshold": "662/755",
+  "witness_iff": "le",
+  "note": "Theorem (p. 242): pi_c(x) ~ x/(c log x) for 1 < c < 755/662, i.e. coverage for gamma > 662/755; a failure witness exists for gamma <= 662/755, collapsing at equality to the facet nu = 1 - gamma = 93/755 where the complement window's floor 1-2e meets the type II lower edge."
+ },
+ "ablations": {
+  "no_typeII_estimate": {
+   "remove_tools": [
+    "L_typeII"
+   ],
+   "expected_threshold": "455/517",
+   "note": "With the type II tool removed the complement piece's toolkit is empty, so a witness exists iff its region is nonempty, i.e. iff 1-2e <= 9-10gamma, which is exactly condition (27) e >= 5gamma-4: threshold 455/517. This isolates (27) as a facet and exhibits its two-sidedness at the paper's exponent pair."
+  },
+  "no_auxiliary_bound": {
+   "remove_tools": [
+    "K_aux"
+   ],
+   "expected_threshold": "1",
+   "note": "Without Lemma 8, term B (N^{3/2} Y^{1/2}) fails for all nu >= 2gamma-1 <= 1 and no gamma achieves coverage: witness at every slice. Matches the paper's structure - the N^{3/2} Y^{1/2} term is dominated only via the split at Y = N^{3/2-gamma+eta} (p. 262)."
+  },
+  "no_exponent_pairs": {
+   "remove_tools": [
+    "K_EP"
+   ],
+   "expected_threshold": "1",
+   "note": "Lemma 8 alone covers [z, N] only when e >= 3/2-gamma, i.e. gamma <= 569/662; above that the type I piece fails on [e, 3/2-gamma], below it the complement piece fails anyway (569/662 < 662/755): witness at every slice."
+  }
+ }
+}

@@ -1,0 +1,102 @@
+{
+  "name": "Jn tail sieve: zeta(gamma) = (6-5*gamma)/4 on gamma in [1, 6/5]",
+  "comment": "Transcription of fm_exact.py / the constraint inventory (Zenodo 10.5281/zenodo.21220096, Appendix A). Constraint format: [[coeffs on variables], [rhs: const, coeff on gamma]] meaning coeffs.x <= const + c*gamma, all rationals as strings. Fail atoms are negated pass conditions; provenance for every atom is the constraint inventory, sections cited per tool.",
+  "variables": ["mu", "eta", "beta"],
+  "parameters": ["gamma"],
+  "objective": "beta",
+  "tools": {
+    "FI0": {
+      "provenance": "Fouvry-Iwaniec Thm 6, grouping m1=s; inventory section 6.3",
+      "fail_options": [
+        [[["0", "-1", "1"], ["0", "0"]]],
+        [[["0", "-3", "-1"], ["-2", "1"]]],
+        [[["0", "-12", "6"], ["4", "-6"]]]
+      ]
+    },
+    "FI1": {
+      "provenance": "Fouvry-Iwaniec Thm 6, grouping m1=mu+s; inventory section 6.3",
+      "fail_options": [
+        [[["1", "-1", "1"], ["0", "0"]]],
+        [[["-2", "-1", "-1"], ["-2", "1"]]],
+        [[["-7", "-5", "6"], ["4", "-6"]]]
+      ]
+    },
+    "FI2": {
+      "provenance": "Fouvry-Iwaniec Thm 6, grouping m1=gamma-mu+s; inventory section 6.3",
+      "fail_options": [
+        [[["-1", "-1", "1"], ["0", "-1"]]],
+        [[["2", "-1", "-1"], ["-2", "3"]]],
+        [[["7", "-5", "6"], ["4", "1"]]]
+      ]
+    },
+    "RS0": {
+      "provenance": "Robert-Sargos Thm 1, grouping m1=s; inventory section 4.3",
+      "fail_options": [
+        [[["0", "-2", "1"], ["0", "0"]]],
+        [[["0", "-5", "1"], ["0", "-1"]]]
+      ]
+    },
+    "RS1": {
+      "provenance": "Robert-Sargos Thm 1, grouping m1=mu+s; inventory section 4.3",
+      "fail_options": [
+        [[["1", "-2", "1"], ["0", "0"]]],
+        [[["-1", "-3", "1"], ["0", "-1"]]]
+      ]
+    },
+    "RS2": {
+      "provenance": "Robert-Sargos Thm 1, grouping m1=gamma-mu+s; inventory section 4.3",
+      "fail_options": [
+        [[["-1", "-2", "1"], ["0", "-1"]]],
+        [[["1", "-3", "1"], ["0", "0"]]]
+      ]
+    },
+    "RS3": {
+      "provenance": "Robert-Sargos Thm 1, grouping m1=gamma+s; inventory section 4.3",
+      "fail_options": [
+        [[["0", "-3", "1"], ["0", "0"]]]
+      ]
+    },
+    "ELEM": {
+      "provenance": "Kuzmin-Landau (E1), exponent pair (1/2,1/2) (E2), exponent pair (1/6,2/3) (E3); type I only; single fail option = conjunction of all three negated clauses; inventory section 5",
+      "fail_options": [
+        [
+          [["-1", "-1", "1"], ["2", "-2"]],
+          [["-2", "-3", "1"], ["2", "-3"]],
+          [["-3", "-7", "1"], ["2", "-4"]]
+        ]
+      ]
+    }
+  },
+  "pieces": {
+    "typeI": {
+      "region": [
+        [["-1", "0", "0"], ["0", "0"]],
+        [["1", "0", "0"], ["0", "2/3"]],
+        [["0", "-1", "0"], ["0", "0"]],
+        [["0", "1", "-1"], ["-1", "1"]],
+        [["0", "0", "-1"], ["0", "0"]],
+        [["0", "0", "1"], ["1", "0"]]
+      ],
+      "tools": ["FI0", "FI1", "FI2", "RS0", "RS1", "RS2", "RS3", "ELEM"]
+    },
+    "typeII": {
+      "region": [
+        [["-1", "0", "0"], ["0", "-1/3"]],
+        [["1", "0", "0"], ["0", "1/2"]],
+        [["0", "-1", "0"], ["0", "0"]],
+        [["0", "1", "-1"], ["-1", "1"]],
+        [["0", "0", "-1"], ["0", "0"]],
+        [["0", "0", "1"], ["1", "0"]]
+      ],
+      "tools": ["FI0", "FI1", "FI2", "RS0", "RS1", "RS2", "RS3"]
+    }
+  },
+  "slices": ["1", "21/20", "11/10", "23/20", "6/5", "5/4"],
+  "expected_profile": {"const": "3/2", "gamma": "-5/4", "floor": "0"},
+  "ablations": {
+    "drop-FI-family": {
+      "remove_tools": ["FI0", "FI1", "FI2"],
+      "note": "Paper byproduct: the optimum is unchanged without Fouvry-Iwaniec Thm 6, hence the Coverage Lemma does not need it."
+    }
+  }
+}

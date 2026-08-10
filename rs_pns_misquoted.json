@@ -1,0 +1,253 @@
+{
+ "name": "CONTROL: Rivat-Sargos system vs the secondary-literature misquote c < 2817/2425",
+ "mode": "coverage",
+ "comment": "Negative control. Identical atom table to rs_pns.json; the ONLY change is the declared expected threshold, set to gamma* = 2425/2817 as transmitted by part of the secondary literature (e.g. arXiv:2304.10119) instead of the paper's own 2426/2817. The certificate must FAIL, and must fail at exactly the slice gamma = 2426/2817, where the system produces a facet witness that the misquoted threshold says should not exist. Demonstrates the audit verdict on a real transmission error rather than a synthetic mutation.",
+ "variables": [
+  "nu"
+ ],
+ "parameters": [
+  "gamma"
+ ],
+ "objective": "nu",
+ "tools": {
+  "HB-typeII": {
+   "provenance": "Heath-Brown [7] type II bound, valid x^{1-gamma} <= N <= x^{5gamma-4} (Section 5). Sole genuine cap: nu <= 5gamma-4 (left edge covered by the choice alpha = 1-gamma).",
+   "fail_options": [
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "4",
+       "-5"
+      ]
+     ]
+    ]
+   ]
+  },
+  "Rivat-thesis-typeI": {
+   "provenance": "Rivat thesis Thm 5.10 [15]: type I bound valid for N >= x^{3(1-gamma)} (Section 5). Fail: nu <= 3-3gamma.",
+   "fail_options": [
+    [
+     [
+      [
+       "1"
+      ],
+      [
+       "3",
+       "-3"
+      ]
+     ]
+    ]
+   ]
+  },
+  "RS-T1": {
+   "provenance": "The paper's new type I' estimate, Theoreme 1 strength (Sections 6-11 + Amelioration, using Sargos's fifth-derivative criterion, Lemme 10). Caps: nu <= (939gamma-761)/143 (main, Section 11 improved), nu <= gamma-1/2 (Section 7 diagonal + Section 11 HK^{1/2} term), nu <= 3gamma-2 (Section 7 B-transform errors), nu <= (5gamma+9)/33 (Lemme 10 applicability |I|lambda^{7/16} >> 1). Fail = nu >= any cap.",
+   "fail_options": [
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "761/143",
+       "-939/143"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "1/2",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "2",
+       "-3"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "-3/11",
+       "-5/33"
+      ]
+     ]
+    ]
+   ]
+  },
+  "RS-T2": {
+   "provenance": "Same machinery at Theoreme 2 strength (Section 11 with Lemme 9, the unimproved fifth-derivative criterion). Caps: nu <= (147gamma-119)/23 (first term), nu <= (597gamma-469)/133 (second term), nu <= gamma-1/2, nu <= 3gamma-2. Fail = nu >= any cap.",
+   "fail_options": [
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "119/23",
+       "-147/23"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "469/133",
+       "-597/133"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "1/2",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "2",
+       "-3"
+      ]
+     ]
+    ]
+   ]
+  }
+ },
+ "pieces": {
+  "typeII": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "-1",
+      "1"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "2",
+      "-2"
+     ]
+    ]
+   ],
+   "tools": [
+    "HB-typeII"
+   ]
+  },
+  "typeI": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "0",
+      "-1/2"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "1",
+      "0"
+     ]
+    ]
+   ],
+   "tools": [
+    "Rivat-thesis-typeI"
+   ]
+  },
+  "typeIprime": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "-2",
+      "2"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "1/3",
+      "0"
+     ]
+    ]
+   ],
+   "tools": [
+    "HB-typeII",
+    "RS-T1",
+    "RS-T2"
+   ]
+  }
+ },
+ "slices": [
+  "43/50",
+  "2426/2817",
+  "4307/5000",
+  "380/441",
+  "13/15",
+  "9/10"
+ ],
+ "expected_coverage": {
+  "threshold": "2425/2817",
+  "witness_iff": "le",
+  "note": "Deliberately wrong (misquoted) threshold; see comment."
+ },
+ "ablations": {
+  "theoreme-2-toolkit": {
+   "remove_tools": [
+    "RS-T1"
+   ],
+   "expected_threshold": "380/441",
+   "note": "Without the Amelioration (Sargos Lemme 10), the toolkit is Theoreme 2's; the paper states c < 441/380 there, i.e. threshold gamma* = 380/441."
+  },
+  "pre-RS-toolkit": {
+   "remove_tools": [
+    "RS-T1",
+    "RS-T2"
+   ],
+   "expected_threshold": "13/15",
+   "note": "Without the paper's new estimate entirely, coverage of type I' stops at nu = 5gamma-4, reproducing the Liu-Rivat threshold c < 15/13 quoted in Section 2."
+  }
+ }
+}

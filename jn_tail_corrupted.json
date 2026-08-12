@@ -1,0 +1,482 @@
+{
+ "name": "CONTROL (expected FAILED): jn_tail with one corrupted profile coefficient",
+ "comment": "Negative control for level mode, census row 10; companion of rs_pns_misquoted.json (the coverage-mode FAILED exemplar). Identical to jn_tail.json except the gamma-coefficient of the first fail atom of tool RS1 is shifted by +1/24, a transcription-slip-sized error. expected_profile is UNCHANGED, so certify.py must report mismatches and exit nonzero. If this file ever PASSES, the engine or the profile has been broken.\n\nSELECTION NOTE. The corrupted coefficient must be load-bearing for the control to work. The first candidate tried was FI0, and the certificate PASSED with it corrupted, because the drop-FI-family ablation already shows the FI tools are not needed for the optimum: a corrupted coefficient inside certified slack is undetectable by construction. That is not a defect of the control but the slack-census point again, and the reason the mutation suite (row 11) reports survivors rather than pretending to full coverage.",
+ "variables": [
+  "mu",
+  "eta",
+  "beta"
+ ],
+ "parameters": [
+  "gamma"
+ ],
+ "objective": "beta",
+ "tools": {
+  "FI0": {
+   "provenance": "Fouvry-Iwaniec Thm 6, grouping m1=s; inventory section 6.3",
+   "fail_options": [
+    [
+     [
+      [
+       "0",
+       "-1",
+       "1"
+      ],
+      [
+       "0",
+       "0"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "0",
+       "-3",
+       "-1"
+      ],
+      [
+       "-2",
+       "1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "0",
+       "-12",
+       "6"
+      ],
+      [
+       "4",
+       "-6"
+      ]
+     ]
+    ]
+   ]
+  },
+  "FI1": {
+   "provenance": "Fouvry-Iwaniec Thm 6, grouping m1=mu+s; inventory section 6.3",
+   "fail_options": [
+    [
+     [
+      [
+       "1",
+       "-1",
+       "1"
+      ],
+      [
+       "0",
+       "0"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-2",
+       "-1",
+       "-1"
+      ],
+      [
+       "-2",
+       "1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-7",
+       "-5",
+       "6"
+      ],
+      [
+       "4",
+       "-6"
+      ]
+     ]
+    ]
+   ]
+  },
+  "FI2": {
+   "provenance": "Fouvry-Iwaniec Thm 6, grouping m1=gamma-mu+s; inventory section 6.3",
+   "fail_options": [
+    [
+     [
+      [
+       "-1",
+       "-1",
+       "1"
+      ],
+      [
+       "0",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "2",
+       "-1",
+       "-1"
+      ],
+      [
+       "-2",
+       "3"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "7",
+       "-5",
+       "6"
+      ],
+      [
+       "4",
+       "1"
+      ]
+     ]
+    ]
+   ]
+  },
+  "RS0": {
+   "provenance": "Robert-Sargos Thm 1, grouping m1=s; inventory section 4.3",
+   "fail_options": [
+    [
+     [
+      [
+       "0",
+       "-2",
+       "1"
+      ],
+      [
+       "0",
+       "0"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "0",
+       "-5",
+       "1"
+      ],
+      [
+       "0",
+       "-1"
+      ]
+     ]
+    ]
+   ]
+  },
+  "RS1": {
+   "provenance": "Robert-Sargos Thm 1, grouping m1=mu+s; inventory section 4.3",
+   "fail_options": [
+    [
+     [
+      [
+       "1",
+       "-2",
+       "1"
+      ],
+      [
+       "0",
+       "1/24"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1",
+       "-3",
+       "1"
+      ],
+      [
+       "0",
+       "-1"
+      ]
+     ]
+    ]
+   ]
+  },
+  "RS2": {
+   "provenance": "Robert-Sargos Thm 1, grouping m1=gamma-mu+s; inventory section 4.3",
+   "fail_options": [
+    [
+     [
+      [
+       "-1",
+       "-2",
+       "1"
+      ],
+      [
+       "0",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "1",
+       "-3",
+       "1"
+      ],
+      [
+       "0",
+       "0"
+      ]
+     ]
+    ]
+   ]
+  },
+  "RS3": {
+   "provenance": "Robert-Sargos Thm 1, grouping m1=gamma+s; inventory section 4.3",
+   "fail_options": [
+    [
+     [
+      [
+       "0",
+       "-3",
+       "1"
+      ],
+      [
+       "0",
+       "0"
+      ]
+     ]
+    ]
+   ]
+  },
+  "ELEM": {
+   "provenance": "Kuzmin-Landau (E1), exponent pair (1/2,1/2) (E2), exponent pair (1/6,2/3) (E3); type I only; single fail option = conjunction of all three negated clauses; inventory section 5",
+   "fail_options": [
+    [
+     [
+      [
+       "-1",
+       "-1",
+       "1"
+      ],
+      [
+       "2",
+       "-2"
+      ]
+     ],
+     [
+      [
+       "-2",
+       "-3",
+       "1"
+      ],
+      [
+       "2",
+       "-3"
+      ]
+     ],
+     [
+      [
+       "-3",
+       "-7",
+       "1"
+      ],
+      [
+       "2",
+       "-4"
+      ]
+     ]
+    ]
+   ]
+  }
+ },
+ "pieces": {
+  "typeI": {
+   "region": [
+    [
+     [
+      "-1",
+      "0",
+      "0"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "1",
+      "0",
+      "0"
+     ],
+     [
+      "0",
+      "2/3"
+     ]
+    ],
+    [
+     [
+      "0",
+      "-1",
+      "0"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "1",
+      "-1"
+     ],
+     [
+      "-1",
+      "1"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "1"
+     ],
+     [
+      "1",
+      "0"
+     ]
+    ]
+   ],
+   "tools": [
+    "FI0",
+    "FI1",
+    "FI2",
+    "RS0",
+    "RS1",
+    "RS2",
+    "RS3",
+    "ELEM"
+   ]
+  },
+  "typeII": {
+   "region": [
+    [
+     [
+      "-1",
+      "0",
+      "0"
+     ],
+     [
+      "0",
+      "-1/3"
+     ]
+    ],
+    [
+     [
+      "1",
+      "0",
+      "0"
+     ],
+     [
+      "0",
+      "1/2"
+     ]
+    ],
+    [
+     [
+      "0",
+      "-1",
+      "0"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "1",
+      "-1"
+     ],
+     [
+      "-1",
+      "1"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "1"
+     ],
+     [
+      "1",
+      "0"
+     ]
+    ]
+   ],
+   "tools": [
+    "FI0",
+    "FI1",
+    "FI2",
+    "RS0",
+    "RS1",
+    "RS2",
+    "RS3"
+   ]
+  }
+ },
+ "slices": [
+  "1",
+  "21/20",
+  "11/10",
+  "23/20",
+  "6/5",
+  "5/4"
+ ],
+ "expected_profile": {
+  "const": "3/2",
+  "gamma": "-5/4",
+  "floor": "0"
+ },
+ "ablations": {
+  "drop-FI-family": {
+   "remove_tools": [
+    "FI0",
+    "FI1",
+    "FI2"
+   ],
+   "note": "Paper byproduct: the optimum is unchanged without Fouvry-Iwaniec Thm 6, hence the Coverage Lemma does not need it."
+  }
+ }
+}

@@ -1,0 +1,149 @@
+{
+ "name": "Dimitrov cube-free: lower branch theta*(c) = (c+3)/5 on (1, 7/6]",
+ "comment": "Companion to dimitrov_cubefree.json, identical region, slices on the lower branch. Binding set {tail_S2, h_average, vdC_q0_via_S9}, attained at zeta = eta = (4c-3)/5. See the main file for the full transcription notes.",
+ "mode": "level",
+ "variables": [
+  "theta",
+  "zeta",
+  "eta"
+ ],
+ "parameters": [
+  "c"
+ ],
+ "objective": "theta",
+ "tools": {},
+ "pieces": {
+  "error-terms": {
+   "region": [
+    [
+     [
+      "-1",
+      "-1",
+      "0"
+     ],
+     [
+      "0",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "0",
+      "-1"
+     ],
+     [
+      "0",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "1/2",
+      "1/2"
+     ],
+     [
+      "-1/2",
+      "0"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "0",
+      "3/2"
+     ],
+     [
+      "-3/2",
+      "1"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "2",
+      "-1"
+     ],
+     [
+      "1",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "0",
+      "1",
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "-1",
+      "0"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "1",
+      "0"
+     ],
+     [
+      "0",
+      "2/3"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "1"
+     ],
+     [
+      "0",
+      "1"
+     ]
+    ]
+   ],
+   "tools": []
+  }
+ },
+ "slices": [
+  "21/20",
+  "11/10",
+  "9/8",
+  "7/6"
+ ],
+ "expected_profile": {
+  "const": "3/5",
+  "c": "1/5"
+ },
+ "provenance": {
+  "tail_S2": "Section 6, displays (50)-(54): S^(2)_c(x) << x^{c+eps} z^{-1}, via the two divisor-counting bounds x^c T^{-2} and x^c D^{-2} with DT > z/4.",
+  "h_average": "Display (38), first term x^c H^{-1} d^{-3} t^{-3} with H = x^eta/(dt), giving x^{c-eta}(dt)^{-2}; the sum over dt <= z converges.",
+  "vdC_q0": "Display (38), second term x^{1/2} H^{1/2}: Lemma 2 at q = 0. With H = x^eta/(dt) this is x^{(1+eta)/2}(dt)^{-1/2}, and sum_{n<=z} tau(n) n^{-1/2} << z^{1/2+eps} contributes zeta/2. Here F ~ h x again, by (33) and (36).",
+  "vdC_q0_via_S9": "Displays (44)-(47): S^(6) << x^{1-c} S^(9) with Lemma 2 at q = 0, giving x^{(3-2c)/2} H^{3/2}(dt)^{-3/2}; the sum converges.",
+  "dropped_third": "Display (38), third term x^{c-1} H^{-1} t^{-3} log^2 x. The paper absorbs it into the first term, which requires d^3 <= x, i.e. zeta <= 1/3, false for every c > 7/6 at the paper's own zeta = (2c-1)/4. It is RETAINED here. With H = x^eta/(dt) it is x^{c-1-eta} d t^{-2}, and sum_{dt<=z} d t^{-2} ~ z^2 (the d-sum diverges), giving exponent c - 1 + 2 zeta - eta."
+ }
+}

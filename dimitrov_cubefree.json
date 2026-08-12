@@ -1,0 +1,153 @@
+{
+ "name": "Dimitrov (2025): cube-free pairs [n^c tan^t(log n)], [.]+1, theta*(c) = (2c+1)/4 on [7/6, 3/2)",
+ "comment": "MIN-MAX (level mode) instance in the manner of cao_zhai.json: minimize theta subject to every error term of the proof being << x^theta. The theorem's conclusion S_c(x) >> x is exactly the statement theta*(c) < 1.\n\nCOORDINATES. Variables (theta, zeta, eta) with zeta = log_x z the divisor-split exponent and eta the Vaaler truncation exponent, H = x^eta/d in the square-free paper and H = x^eta/(dt) in the cube-free paper. Parameter c.\n\nFREED DESIGN VARIABLES. The paper pins z = x^{(2c-1)/4} by (1) and H = z/d resp. z/(dt) by (47) resp. (29), that is zeta = eta = (2c-1)/4. Both are FREED here so that the certificate tests whether those choices are optimal, following the cao_zhai.json convention.\n\nWHY THE SYSTEM IS AFFINE. Every application of Lemma 2 has F ~ h x exactly: the implicit function obeys y' ~ K^{gamma-1} d^{2 gamma} and K ~ x^c d^{-2}, so K^gamma d^{2 gamma} ~ x. The factor tan^theta(log n) never enters the arithmetic, because the range [Delta_1, Delta_2) of (3)-(4) is chosen so that tan(log n) lies in [1, 2] and the factor is bounded above and below. There is no exponent pair anywhere in either paper, so unlike the Heath-Brown and Guo-Guo-Lu instances there is no bilinear scope boundary: the transcription is exact with nothing pinned.\n\nDERIVATIVE-TEST ORDER. Lemma 2's integer order q is itself a design parameter, in the way that l = 5 is one in Rivat-Sargos. It is pinned here at the paper's choices because varying it changes which terms exist, not merely their coefficients. Optimizing over it by hand gives the ceilings recorded in the audit note, and the paper's choices are the best available.\n\nSTRUCTURAL ROWS. zeta <= eta encodes H >= 1 for every divisor in range. The rows zeta >= 0, eta >= 0, zeta <= zmax*c and eta <= c are boxes; the first three are genuine and the last keeps the polytope pointed for vertex enumeration. None is active at the optimum.\n\nSOURCE. S. I. Dimitrov, 'Pairs of cube-free values of the type [n^c tan^theta(log n)], [n^c tan^theta(log n)] + 1' (2025). Theorem 1: S_c(x) >> x for 1 < c < 3/2 and fixed theta > 1.\n\nPROFILE. Piecewise linear with breakpoint at c = 7/6. This file certifies the upper branch theta*(c) = (2c+1)/4, binding set {tail_S2, h_average, vdC_q0}, attained at zeta = eta = (2c-1)/4 -- which is exactly the paper's own design point, so here the choice is optimal. The lower branch theta*(c) = (c+3)/5 on (1, 7/6] is certified by dimitrov_cubefree_lowc.json.\n\nFINDING. The retained term dropped_third never binds on the interior and is tight only at the endpoint c = 3/2, so the invalid absorption at display (38) changes neither the threshold nor the error profile anywhere.",
+ "mode": "level",
+ "variables": [
+  "theta",
+  "zeta",
+  "eta"
+ ],
+ "parameters": [
+  "c"
+ ],
+ "objective": "theta",
+ "tools": {},
+ "pieces": {
+  "error-terms": {
+   "region": [
+    [
+     [
+      "-1",
+      "-1",
+      "0"
+     ],
+     [
+      "0",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "0",
+      "-1"
+     ],
+     [
+      "0",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "1/2",
+      "1/2"
+     ],
+     [
+      "-1/2",
+      "0"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "0",
+      "3/2"
+     ],
+     [
+      "-3/2",
+      "1"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "2",
+      "-1"
+     ],
+     [
+      "1",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "0",
+      "1",
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "-1",
+      "0"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "1",
+      "0"
+     ],
+     [
+      "0",
+      "2/3"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "1"
+     ],
+     [
+      "0",
+      "1"
+     ]
+    ]
+   ],
+   "tools": []
+  }
+ },
+ "slices": [
+  "7/6",
+  "6/5",
+  "13/10",
+  "4/3",
+  "7/5",
+  "29/20",
+  "149/100",
+  "3/2"
+ ],
+ "expected_profile": {
+  "const": "1/4",
+  "c": "1/2"
+ },
+ "provenance": {
+  "tail_S2": "Section 6, displays (50)-(54): S^(2)_c(x) << x^{c+eps} z^{-1}, via the two divisor-counting bounds x^c T^{-2} and x^c D^{-2} with DT > z/4.",
+  "h_average": "Display (38), first term x^c H^{-1} d^{-3} t^{-3} with H = x^eta/(dt), giving x^{c-eta}(dt)^{-2}; the sum over dt <= z converges.",
+  "vdC_q0": "Display (38), second term x^{1/2} H^{1/2}: Lemma 2 at q = 0. With H = x^eta/(dt) this is x^{(1+eta)/2}(dt)^{-1/2}, and sum_{n<=z} tau(n) n^{-1/2} << z^{1/2+eps} contributes zeta/2. Here F ~ h x again, by (33) and (36).",
+  "vdC_q0_via_S9": "Displays (44)-(47): S^(6) << x^{1-c} S^(9) with Lemma 2 at q = 0, giving x^{(3-2c)/2} H^{3/2}(dt)^{-3/2}; the sum converges.",
+  "dropped_third": "Display (38), third term x^{c-1} H^{-1} t^{-3} log^2 x. The paper absorbs it into the first term, which requires d^3 <= x, i.e. zeta <= 1/3, false for every c > 7/6 at the paper's own zeta = (2c-1)/4. It is RETAINED here. With H = x^eta/(dt) it is x^{c-1-eta} d t^{-2}, and sum_{dt<=z} d t^{-2} ~ z^2 (the d-sum diverges), giving exponent c - 1 + 2 zeta - eta."
+ }
+}

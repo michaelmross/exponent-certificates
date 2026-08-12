@@ -1,0 +1,141 @@
+{
+ "name": "Dimitrov (Springer Optim. Appl. 207, 2023): square-free [n^c tan^t(log n)], theta*(c) = (4c+1)/7 on [16/13, 3/2)",
+ "comment": "MIN-MAX (level mode) instance in the manner of cao_zhai.json: minimize theta subject to every error term of the proof being << x^theta. The theorem's conclusion S_c(x) >> x is exactly the statement theta*(c) < 1.\n\nCOORDINATES. Variables (theta, zeta, eta) with zeta = log_x z the divisor-split exponent and eta the Vaaler truncation exponent, H = x^eta/d in the square-free paper and H = x^eta/(dt) in the cube-free paper. Parameter c.\n\nFREED DESIGN VARIABLES. The paper pins z = x^{(2c-1)/4} by (1) and H = z/d resp. z/(dt) by (47) resp. (29), that is zeta = eta = (2c-1)/4. Both are FREED here so that the certificate tests whether those choices are optimal, following the cao_zhai.json convention.\n\nWHY THE SYSTEM IS AFFINE. Every application of Lemma 2 has F ~ h x exactly: the implicit function obeys y' ~ K^{gamma-1} d^{2 gamma} and K ~ x^c d^{-2}, so K^gamma d^{2 gamma} ~ x. The factor tan^theta(log n) never enters the arithmetic, because the range [Delta_1, Delta_2) of (3)-(4) is chosen so that tan(log n) lies in [1, 2] and the factor is bounded above and below. There is no exponent pair anywhere in either paper, so unlike the Heath-Brown and Guo-Guo-Lu instances there is no bilinear scope boundary: the transcription is exact with nothing pinned.\n\nDERIVATIVE-TEST ORDER. Lemma 2's integer order q is itself a design parameter, in the way that l = 5 is one in Rivat-Sargos. It is pinned here at the paper's choices because varying it changes which terms exist, not merely their coefficients. Optimizing over it by hand gives the ceilings recorded in the audit note, and the paper's choices are the best available.\n\nSTRUCTURAL ROWS. zeta <= eta encodes H >= 1 for every divisor in range. The rows zeta >= 0, eta >= 0, zeta <= zmax*c and eta <= c are boxes; the first three are genuine and the last keeps the polytope pointed for vertex enumeration. None is active at the optimum.\n\nSOURCE. S. I. Dimitrov, 'Square-free values of [n^c tan^theta(log n)]', Exploring Mathematical Analysis, Approximation Theory and Optimization, Springer Optim. Appl. 207 (2023), 33-43. Theorem 1: S_c(x) >> x for 1 < c < 3/2 and fixed theta > 1.\n\nPROFILE. theta*(c) is piecewise linear with breakpoint at c = 16/13. This file certifies the upper branch theta*(c) = (4c+1)/7, binding set {tail_S2, h_average, vdC_q1}, attained at zeta = eta = (3c-1)/7. The lower branch theta*(c) = (c+3)/5 on (1, 16/13], binding set {tail_S2, h_average, vdC_q0_via_S9}, is certified by dimitrov_squarefree_lowc.json. The two agree at 16/13, which appears in both slice sets.\n\nFINDING. The paper's design point zeta = eta = (2c-1)/4 gives theta = (2c+1)/4, which is strictly worse than (4c+1)/7 for every c < 3/2 and equal only at c = 3/2. It does not affect Theorem 1, since both are < 1 on the same range, but the same proof yields the better exponent. The value (2c+1)/4 is Rieger's 1978 error exponent for [n^c], so the design point looks inherited rather than optimized.",
+ "mode": "level",
+ "variables": [
+  "theta",
+  "zeta",
+  "eta"
+ ],
+ "parameters": [
+  "c"
+ ],
+ "objective": "theta",
+ "tools": {},
+ "pieces": {
+  "error-terms": {
+   "region": [
+    [
+     [
+      "-1",
+      "-1",
+      "0"
+     ],
+     [
+      "0",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "0",
+      "-1"
+     ],
+     [
+      "0",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "0",
+      "1/6"
+     ],
+     [
+      "-1/6",
+      "-1/2"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "0",
+      "3/2"
+     ],
+     [
+      "-3/2",
+      "1"
+     ]
+    ],
+    [
+     [
+      "0",
+      "1",
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "-1",
+      "0"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "1",
+      "0"
+     ],
+     [
+      "0",
+      "1/2"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "1"
+     ],
+     [
+      "0",
+      "1"
+     ]
+    ]
+   ],
+   "tools": []
+  }
+ },
+ "slices": [
+  "16/13",
+  "5/4",
+  "13/10",
+  "4/3",
+  "7/5",
+  "29/20",
+  "149/100",
+  "3/2"
+ ],
+ "expected_profile": {
+  "const": "1/7",
+  "c": "4/7"
+ },
+ "provenance": {
+  "tail_S2": "Section 6, display (50): S^(2)_c(x) << x^c z^{-1} = x^{c-zeta}. The divisors beyond z are handled trivially.",
+  "h_average": "Display (37), first term x^c H^{-1} d^{-2} with H = x^eta/d, giving x^{c-eta} d^{-1}; sum over d <= z contributes log z only.",
+  "vdC_q1": "Display (37), second term x^{(3c+1)/6} H^{1/6} d^{-1}: Lemma 2 (Graham-Kolesnik Thm 2.9) at q = 1, Q = 2. With H = x^eta/d this is x^{(1+eta+3c)/6} d^{-7/6} and the d-sum converges. Note F ~ h x exactly, since K^gamma d^{2 gamma} ~ x by (27) and (34).",
+  "vdC_q0_via_S9": "Displays (43)-(46): S^(6) << x^{1-c} S^(9) with Lemma 2 at q = 0, giving x^{(3-2c)/2} H^{3/2} d^{-3/2}; the d-sum converges."
+ }
+}

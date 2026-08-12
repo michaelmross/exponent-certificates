@@ -1,0 +1,138 @@
+{
+ "name": "Dimitrov square-free: lower branch theta*(c) = (c+3)/5 on (1, 16/13]",
+ "comment": "Companion to dimitrov_squarefree.json, identical region, slices on the lower branch of the piecewise-linear profile. Binding set {tail_S2, h_average, vdC_q0_via_S9}, attained at zeta = eta = (4c-3)/5. See the main file for the full transcription notes.",
+ "mode": "level",
+ "variables": [
+  "theta",
+  "zeta",
+  "eta"
+ ],
+ "parameters": [
+  "c"
+ ],
+ "objective": "theta",
+ "tools": {},
+ "pieces": {
+  "error-terms": {
+   "region": [
+    [
+     [
+      "-1",
+      "-1",
+      "0"
+     ],
+     [
+      "0",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "0",
+      "-1"
+     ],
+     [
+      "0",
+      "-1"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "0",
+      "1/6"
+     ],
+     [
+      "-1/6",
+      "-1/2"
+     ]
+    ],
+    [
+     [
+      "-1",
+      "0",
+      "3/2"
+     ],
+     [
+      "-3/2",
+      "1"
+     ]
+    ],
+    [
+     [
+      "0",
+      "1",
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "-1",
+      "0"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0",
+      "1",
+      "0"
+     ],
+     [
+      "0",
+      "1/2"
+     ]
+    ],
+    [
+     [
+      "0",
+      "0",
+      "1"
+     ],
+     [
+      "0",
+      "1"
+     ]
+    ]
+   ],
+   "tools": []
+  }
+ },
+ "slices": [
+  "21/20",
+  "11/10",
+  "23/20",
+  "6/5",
+  "16/13"
+ ],
+ "expected_profile": {
+  "const": "3/5",
+  "c": "1/5"
+ },
+ "provenance": {
+  "tail_S2": "Section 6, display (50): S^(2)_c(x) << x^c z^{-1} = x^{c-zeta}. The divisors beyond z are handled trivially.",
+  "h_average": "Display (37), first term x^c H^{-1} d^{-2} with H = x^eta/d, giving x^{c-eta} d^{-1}; sum over d <= z contributes log z only.",
+  "vdC_q1": "Display (37), second term x^{(3c+1)/6} H^{1/6} d^{-1}: Lemma 2 (Graham-Kolesnik Thm 2.9) at q = 1, Q = 2. With H = x^eta/d this is x^{(1+eta+3c)/6} d^{-7/6} and the d-sum converges. Note F ~ h x exactly, since K^gamma d^{2 gamma} ~ x by (27) and (34).",
+  "vdC_q0_via_S9": "Displays (43)-(46): S^(6) << x^{1-c} S^(9) with Lemma 2 at q = 0, giving x^{(3-2c)/2} H^{3/2} d^{-3/2}; the d-sum converges."
+ }
+}

@@ -1,0 +1,374 @@
+{
+ "name": "Guo-Guo-Lu 2025 PS primes: coverage threshold gamma* = 8886224/10318869 (c < 10318869/8886224)",
+ "mode": "coverage",
+ "comment": "Source: Lingyu Guo, Victor Zhenyu Guo, Li Lu, 'The Piatetski-Shapiro prime number theorem', arXiv:2505.10391v2 (8 December 2025). Certified claim: Theorem 1.1, pi_c(x) = x^{1/c}/log x + O(x^{1/c}/log^2 x) for 1 < c < 10318869/8886224 = 1.1612..., that is, coverage for gamma = 1/c > 8886224/10318869. This is the current record for the asymptotic form. It improves Rivat-Sargos (c < 2817/2426, gamma > 2426/2817 = 0.86119986) in the fifth decimal place, the two thresholds differing by 3.7e-5. The slice gamma = 2426/2817 therefore sits just above the new threshold and must report coverage, which is the tightest bracket in the slice set.\n\nCOORDINATES. Variable mu = log_x M, where M is the coefficient-carrying range of the bilinear form (3.1) and MN ~ x, so N = x^{1-mu}. Parameter gamma = 1/c.\n\nDESIGN SUBSTITUTIONS (sandwich discipline, item 2), all the paper's own:\n (a) alpha := 1-gamma and l := 5 in Lemma 3.3 (Rivat-Sargos), section 5.2. Taking alpha = 1-gamma aligns the decomposition's type II window [x^alpha, x^{2alpha}] with the lower edge of Lemma 3.1. Taking l = 5 fixes the admissibility band 1/2^l <= alpha <= 1/6, that is 5/6 <= gamma <= 31/32, encoded as the two gate pieces.\n (b) H := x^{1-gamma+eps}, the Vaaler truncation height of section 5.1, taken at full strength.\n (c) exponent pair (kappa, lambda) = (10769/351096, 609317/702192), quoted by the paper from Tao-Trudgian-Yang, arXiv:2501.16779, and recorded in the ANTEDB (blueprint, exponent pairs chapter, derived.py: prove_exponent_pair(frac(10769,351096), frac(609317,702192))). This pair is not an A/B-process word. It is obtained from beta(alpha) bounds through that paper's Lemma 4.10 and Lemma 5.3, so it enters here as an imported external input and is NOT re-derived by this certificate.\n\nLINEARITY. At fixed (kappa, lambda) every condition in sections 5.2 through 5.4 is rational-affine in (mu; gamma) and the transcription is exact. Jointly in (kappa, lambda, gamma) the system is bilinear, because Theorem 1.2's exponents multiply gamma through the substitution H = x^{1-gamma}. Optimization over the exponent-pair hull therefore lies outside the certifiable linear layer, exactly as for Heath-Brown 1983 at (11/53, 33/53).\n\nPIECES. The three obligations of Lemma 3.3 with alpha = 1-gamma, stated in mu:\n (i) typeII_window: N in [x^{1-gamma}, x^{2-2gamma}], that is mu in [2gamma-1, gamma], tool L_typeII. Facet 6/7, from 2gamma-1 <= 5-5gamma.\n (ii) typeIprime_window: N in [x^{2-2gamma}, x^{1/3}], that is mu in [2/3, 2gamma-1], tools L_typeII and T_thm12. The region is Lemma 3.3's own window and NOT the paper's narrowed window x^{5gamma-4} << N << x^{1/3}. That narrowing is a consequence rather than an input. A type I' sum is a special case of a type II sum, so Lemma 3.1 covers the part of the window with mu > 5-5gamma, and the engine derives the effective burden mu in [2/3, min(2gamma-1, 5-5gamma)] on its own.\n (iii) typeI_window: N >= x^{gamma/2}, that is mu in [0, 1-gamma/2], tool L_typeI. Facet 6/7, from 1-gamma/2 <= 3gamma-2.\nTwo further pieces, gate_l5_lower and gate_l5_upper, have empty toolkits and fire exactly when Lemma 3.3's hypothesis 1/2^l <= alpha <= 1/6 fails at l = 5.\n\nCONSTRUCTED EDGES. L_typeII's lower edge mu >= gamma carries no fail atom, because alpha := 1-gamma makes the decomposition's window floor coincide with the estimate's lower edge by construction. This is the direct analogue of term A in the Heath-Brown instance, and reinstating the atom would plant a spurious boundary witness at mu = gamma for every gamma. Term 6 of Theorem 1.2, H M^{2/3} N^{2/3}, is adequate exactly when N >= H^2 = x^{2-2gamma} = x^{2alpha}, which coincides with the type I' window's own lower-N edge for the same reason. Its fail atom is nevertheless RETAINED. The coincidence is a single boundary point, the type II tool succeeds there whenever gamma > 6/7, and so no spurious witness arises while the genuine facet 6/7 survives. The two cases together are the worked illustration of why item 3 asks whether an edge is constructed, not merely whether it coincides.\n\nFINDINGS (details in the accompanying audit note). The printed exponents of E1 are exact and reproduce the threshold on the nose. E2's printed x-exponent 1.1743 is a typo for 1.7419, and it does not propagate, since the paper's own derived condition for E2 uses the correct value. The gamma-condition printed for E4 is wrong, 0.838 against the exact 18403303/22530303 = 0.816824, and its inequality direction is printed backwards. Both errors are harmless. Seven of the paper's nine printed conditions are vacuous rather than merely dominated, because they lie below 5/6, where the type I' window is empty. Only E1 and E6 can bind, and the entire type I' burden lives on gamma in [5/6, 13/15]. Theorem 1.2 has twelve terms and section 5.4 prints nine. The three unprinted terms are options 10 through 12 here and yield 5/6, 2/3 and 1/2, all slack.",
+ "variables": [
+  "mu"
+ ],
+ "parameters": [
+  "gamma"
+ ],
+ "objective": "mu",
+ "tools": {
+  "L_typeII": {
+   "provenance": "Lemma 3.1 (= Heath-Brown 1983, Lemma 3; paper p. 6): S_II << x^{1-eps} for x^{1-gamma+eps} << N << x^{5gamma-4-eps}. In mu = log_x M with MN ~ x the window is 5-5gamma <= mu <= gamma. Sole fail atom: mu <= 5-5gamma (i.e. N above the upper edge x^{5gamma-4}). The lower edge mu >= gamma (N below x^{1-gamma}) carries NO fail atom: Lemma 3.3 is applied with alpha := 1-gamma precisely so that the decomposition's type II window floor x^alpha coincides with this estimate's lower edge, which is a constructed edge in the sense of the sandwich discipline (item 3). Reinstating it would plant a spurious boundary witness at mu = gamma on the typeII_window piece for every gamma.",
+   "fail_options": [
+    [
+     [
+      [
+       "1"
+      ],
+      [
+       "5",
+       "-5"
+      ]
+     ]
+    ]
+   ]
+  },
+  "L_typeI": {
+   "provenance": "Lemma 5.1 (paper p. 13), proved from Robert-Sargos (Lemma 2.8) with (X,H,M,N,alpha,beta,gamma) -> (H M^gamma N^gamma, H, N, M, gamma, 1, gamma): S_I << (HMN)^eps (H M^{(gamma+3)/4} N^{(gamma+2)/4} + H M N^{1/2} + M^{1-gamma} N^{1-gamma}), so with H = x^{1-gamma} and MN ~ x the bound is x^eps (x^{3/2-3gamma/4} M^{1/4} + x^{3/2-gamma} M^{1/2} + x^{1-gamma}) and adequacy needs mu <= 3gamma-2 (binding) and mu <= 2gamma-1 (slack, since 3gamma-2 <= 2gamma-1 for gamma <= 1). Sole fail atom, as the paper states it: mu >= 3gamma-2.",
+   "fail_options": [
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "2",
+       "-3"
+      ]
+     ]
+    ]
+   ]
+  },
+  "T_thm12": {
+   "provenance": "Theorem 1.2 (paper p. 2) at the exponent pair (kappa, lambda) = (10769/351096, 609317/702192), applied as the paper does in section 5.4 with (X,H,M,N) -> (x, M, H, N), i.e. the theorem's H slot receives the paper's coefficient range M, its M slot receives the truncation height H = x^{1-gamma}, and its N slot receives N = x^{1-mu}. The twelve terms of Theorem 1.2 are terms of a SUM, so the bound is adequate only if ALL twelve are << x, and each term therefore contributes one fail option. Written E_i = x^{A_i + C_i mu - B_i gamma}, the fail atom for term i is A_i + C_i mu - B_i gamma >= 1. Options are listed in the order of the terms in Theorem 1.2; options 1-9 are the paper's printed E1-E9 and options 10-12 are the three terms X^{1/4}H^{1/2}M^{1/2}N, H^{1/2}MN, X^{-1/2}HMN that section 5.4 does not print. Option 12 has no mu dependence and acts as a pure parameter gate (gamma >= 1/2).",
+   "fail_options": [
+    [
+     [
+      [
+       "544703/4070478"
+      ],
+      [
+       "1662605/2035239",
+       "-1146541/1356826"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-21538/1333047"
+      ],
+      [
+       "3956065/5332188",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "609317/1333047"
+      ],
+      [
+       "5217775/5332188",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "1720261/8140956"
+      ],
+      [
+       "7281275/8140956",
+       "-2503367/2713652"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-5/12"
+      ],
+      [
+       "5/12",
+       "-13/12"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1/3"
+      ],
+      [
+       "1/3",
+       "-2/3"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "7/12"
+      ],
+      [
+       "11/12",
+       "-13/12"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1/12"
+      ],
+      [
+       "7/12",
+       "-11/12"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "544703/2808768"
+      ],
+      [
+       "515875/702192",
+       "-725971/936256"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "1/2"
+      ],
+      [
+       "3/4",
+       "-1/2"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "1/2"
+      ],
+      [
+       "1",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "0"
+      ],
+      [
+       "1/2",
+       "-1"
+      ]
+     ]
+    ]
+   ]
+  }
+ },
+ "pieces": {
+  "typeII_window": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "1",
+      "-2"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "0",
+      "1"
+     ]
+    ]
+   ],
+   "tools": [
+    "L_typeII"
+   ]
+  },
+  "typeIprime_window": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "-2/3",
+      "0"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "-1",
+      "2"
+     ]
+    ]
+   ],
+   "tools": [
+    "L_typeII",
+    "T_thm12"
+   ]
+  },
+  "typeI_window": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "1",
+      "-1/2"
+     ]
+    ]
+   ],
+   "tools": [
+    "L_typeI"
+   ]
+  },
+  "gate_l5_lower": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "1",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0"
+     ],
+     [
+      "5/6",
+      "-1"
+     ]
+    ]
+   ],
+   "tools": []
+  },
+  "gate_l5_upper": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "1",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0"
+     ],
+     [
+      "-31/32",
+      "1"
+     ]
+    ]
+   ],
+   "tools": []
+  }
+ },
+ "slices": [
+  "4/5",
+  "5/6",
+  "257/300",
+  "6/7",
+  "429/500",
+  "8607/10000",
+  "861/1000",
+  "8886224/10318869",
+  "2426/2817",
+  "8613/10000",
+  "1077/1250",
+  "173/200",
+  "13/15",
+  "867/1000",
+  "7/8",
+  "263/300",
+  "9/10",
+  "19/20",
+  "767/800"
+ ],
+ "expected_coverage": {
+  "threshold": "8886224/10318869",
+  "witness_iff": "le",
+  "note": "Theorem 1.1: pi_c(x) = x^{1/c}/log x + O(x^{1/c}/log^2 x) for 1 < c < 10318869/8886224, i.e. coverage for gamma > 8886224/10318869. A failure witness exists for gamma <= 8886224/10318869, collapsing at equality to the facet mu = 2/3, where the first term of Theorem 1.2 meets the type I' window's ceiling N = x^{1/3} that Lemma 3.3 inherits from the Heath-Brown identity. Scope: the certified band is two-sided, [8886224/10318869, 31/32], the upper edge being the l = 5 admissibility gate alpha >= 1/2^l of Lemma 3.3 (piece gate_l5_upper). All slices lie strictly below 31/32. The upper edge is retired by taking l >= 6, which is a change of design substitution, not of the linear layer."
+ },
+ "ablations": {
+  "no_typeIprime_bound": {
+   "remove_tools": [
+    "T_thm12"
+   ],
+   "expected_threshold": "13/15",
+   "note": "With Theorem 1.2 removed the type I' window is covered only where the type II estimate reaches, so a witness exists iff 2/3 <= 5-5gamma, i.e. iff gamma <= 13/15. Together with the typeII_window facet 6/7 and the gate at 5/6 the union is (-inf, 13/15]. This is exactly the Liu-Rivat threshold (c < 15/13), which the paper cites for gamma >= 13/15: the ablation shows that the type I' bound is load-bearing precisely on gamma in [5/6, 13/15] and does nothing outside it."
+  },
+  "no_typeII_estimate": {
+   "remove_tools": [
+    "L_typeII"
+   ],
+   "expected_threshold": "1",
+   "note": "Without Lemma 3.1 the typeII_window piece has an empty toolkit, so a witness exists iff its region [2gamma-1, gamma] is nonempty, which holds for every gamma <= 1: witness at every slice. Lemma 3.1 is the one estimate with no substitute anywhere in the decomposition."
+  },
+  "no_typeI_estimate": {
+   "remove_tools": [
+    "L_typeI"
+   ],
+   "expected_threshold": "1",
+   "note": "Without Lemma 5.1 the typeI_window piece has an empty toolkit and its region [0, 1-gamma/2] is nonempty for every gamma <= 2: witness at every slice. Lemma 5.1's own facet is 6/7 (from 1-gamma/2 <= 3gamma-2), well below the threshold, so the lemma is essential but not binding."
+  }
+ }
+}

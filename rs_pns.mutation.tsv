@@ -1,6 +1,6 @@
-tool:HB-typeII/opt0/atom0/rhs0+	SURVIVED
+tool:HB-typeII/opt0/atom0/rhs0+	killed
 tool:HB-typeII/opt0/atom0/rhs0-	killed
-tool:HB-typeII/opt0/atom0/rhs1+	SURVIVED
+tool:HB-typeII/opt0/atom0/rhs1+	killed
 tool:HB-typeII/opt0/atom0/rhs1-	killed
 tool:Rivat-thesis-typeI/opt0/atom0/rhs0+	killed
 tool:Rivat-thesis-typeI/opt0/atom0/rhs0-	SURVIVED
@@ -22,13 +22,13 @@ tool:RS-T1/opt3/atom0/rhs0+	SURVIVED
 tool:RS-T1/opt3/atom0/rhs0-	SURVIVED
 tool:RS-T1/opt3/atom0/rhs1+	SURVIVED
 tool:RS-T1/opt3/atom0/rhs1-	SURVIVED
-tool:RS-T2/opt0/atom0/rhs0+	SURVIVED
+tool:RS-T2/opt0/atom0/rhs0+	killed
 tool:RS-T2/opt0/atom0/rhs0-	killed
-tool:RS-T2/opt0/atom0/rhs1+	SURVIVED
+tool:RS-T2/opt0/atom0/rhs1+	killed
 tool:RS-T2/opt0/atom0/rhs1-	killed
-tool:RS-T2/opt1/atom0/rhs0+	SURVIVED
+tool:RS-T2/opt1/atom0/rhs0+	killed
 tool:RS-T2/opt1/atom0/rhs0-	SURVIVED
-tool:RS-T2/opt1/atom0/rhs1+	SURVIVED
+tool:RS-T2/opt1/atom0/rhs1+	killed
 tool:RS-T2/opt1/atom0/rhs1-	SURVIVED
 tool:RS-T2/opt2/atom0/rhs0+	SURVIVED
 tool:RS-T2/opt2/atom0/rhs0-	SURVIVED

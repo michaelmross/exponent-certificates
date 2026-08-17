@@ -181,12 +181,13 @@
   "22/25",
   "455/517",
   "2201/2500",
-  "881/1000"
+  "881/1000",
+  "177/200"
  ],
  "expected_coverage": {
   "threshold": "662/755",
   "witness_iff": "le",
-  "note": "Theorem (p. 242): pi_c(x) ~ x/(c log x) for 1 < c < 755/662, i.e. coverage for gamma > 662/755; a failure witness exists for gamma <= 662/755, collapsing at equality to the facet nu = 1 - gamma = 93/755 where the complement window's floor 1-2e meets the type II lower edge."
+  "note": "Theorem (p. 242): pi_c(x) ~ x/(c log x) for 1 < c < 755/662, i.e. coverage for gamma > 662/755; a gap witness exists for gamma <= 662/755, collapsing at equality to the facet nu = 1 - gamma = 93/755 where the complement window's floor 1-2e meets the type II lower edge."
  },
  "ablations": {
   "no_typeII_estimate": {

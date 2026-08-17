@@ -239,7 +239,7 @@
  "expected_coverage": {
   "threshold": "2426/2817",
   "witness_iff": "le",
-  "note": "Theoreme 1: asymptotic holds for c < 2817/2426, i.e. coverage for gamma > 2426/2817; failure witness exists for gamma <= 2426/2817 with the witness collapsing to nu = 1/3 at equality."
+  "note": "Theoreme 1: asymptotic holds for c < 2817/2426, i.e. coverage for gamma > 2426/2817; gap witness exists for gamma <= 2426/2817 with the witness collapsing to nu = 1/3 at equality."
  },
  "ablations": {
   "theoreme-2-toolkit": {

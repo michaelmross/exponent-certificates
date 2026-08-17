@@ -27,7 +27,7 @@ of the objective over each nonempty polytope by exhaustive vertex
 enumeration: all size-n subsets of the constraint rows, solved over Q by
 Gaussian elimination (fractions.Fraction throughout; no floating point).
 The profile zeta(slice) is the minimum over polytopes and pieces -- the
-first level at which a total-failure witness exists. Closed inequalities
+first level at which a total-gap witness exists. Closed inequalities
 throughout: the reported zeta is the infimum of failing levels, and the
 witness sits on the facet (cf. the constraint inventory, Convention 2.3).
 
@@ -225,7 +225,7 @@ def certify_slice(inst, slice_vals, removed=()):
 
 
 def run_coverage(inst, args):
-    """Coverage mode: for each slice, report whether a total-failure witness
+    """Coverage mode: for each slice, report whether a total-gap witness
     exists in any piece (all tools fail simultaneously at some point of the
     region). The certified object is the existence threshold in the slice
     parameter, checked against expected_coverage = {threshold, witness_iff}.
@@ -259,7 +259,7 @@ def run_coverage(inst, args):
                        f"{'witness' if want else 'covered'}]")
             sl = ", ".join(f"{p}={v}" for p, v in zip(inst.parameters, sv))
             print(f"  {sl}:  "
-                  f"{'FAILURE WITNESS' if exists else 'covered':>15}  "
+                  f"{'GAP WITNESS' if exists else 'covered':>15}  "
                   f"({detail}){tag}")
         if expect_thr is not None:
             d = (inst.spec.get("expected_coverage") or {}).get(

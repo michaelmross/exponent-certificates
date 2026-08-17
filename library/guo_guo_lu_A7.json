@@ -1,0 +1,349 @@
+{
+ "name": "VARIANT (not the paper): Guo-Guo-Lu architecture at hull vertex n=7 = A(18/199, 593/796)",
+ "mode": "coverage",
+ "comment": "Variant of guo_guo_lu.json, identical except for the exponent pair, used to check whether the paper's threshold is optimal over the currently known hull of exponent pairs. Pair: (9/217, 1461/1736) = A(18/199, 593/796), vertex n=7 of Table 5.2 in the ANTEDB blueprint. This is NOT a claim made by Guo, Guo and Lu.",
+ "variables": [
+  "mu"
+ ],
+ "parameters": [
+  "gamma"
+ ],
+ "objective": "mu",
+ "tools": {
+  "L_typeII": {
+   "provenance": "Lemma 3.1 (= Heath-Brown 1983, Lemma 3; paper p. 6): S_II << x^{1-eps} for x^{1-gamma+eps} << N << x^{5gamma-4-eps}. In mu = log_x M with MN ~ x the window is 5-5gamma <= mu <= gamma. Sole fail atom: mu <= 5-5gamma (i.e. N above the upper edge x^{5gamma-4}). The lower edge mu >= gamma (N below x^{1-gamma}) carries NO fail atom: Lemma 3.3 is applied with alpha := 1-gamma precisely so that the decomposition's type II window floor x^alpha coincides with this estimate's lower edge, which is a constructed edge in the sense of the sandwich discipline (item 3). Reinstating it would plant a spurious boundary witness at mu = gamma on the typeII_window piece for every gamma.",
+   "fail_options": [
+    [
+     [
+      [
+       "1"
+      ],
+      [
+       "5",
+       "-5"
+      ]
+     ]
+    ]
+   ]
+  },
+  "L_typeI": {
+   "provenance": "Lemma 5.1 (paper p. 13), proved from Robert-Sargos (Lemma 2.8) with (X,H,M,N,alpha,beta,gamma) -> (H M^gamma N^gamma, H, N, M, gamma, 1, gamma): S_I << (HMN)^eps (H M^{(gamma+3)/4} N^{(gamma+2)/4} + H M N^{1/2} + M^{1-gamma} N^{1-gamma}), so with H = x^{1-gamma} and MN ~ x the bound is x^eps (x^{3/2-3gamma/4} M^{1/4} + x^{3/2-gamma} M^{1/2} + x^{1-gamma}) and adequacy needs mu <= 3gamma-2 (binding) and mu <= 2gamma-1 (slack, since 3gamma-2 <= 2gamma-1 for gamma <= 1). Sole fail atom, as the paper states it: mu >= 3gamma-2.",
+   "fail_options": [
+    [
+     [
+      [
+       "-1"
+      ],
+      [
+       "2",
+       "-3"
+      ]
+     ]
+    ]
+   ]
+  },
+  "T_thm12": {
+   "provenance": "Theorem 1.2 (paper p. 2) at the exponent pair (kappa, lambda) = (10769/351096, 609317/702192), applied as the paper does in section 5.4 with (X,H,M,N) -> (x, M, H, N), i.e. the theorem's H slot receives the paper's coefficient range M, its M slot receives the truncation height H = x^{1-gamma}, and its N slot receives N = x^{1-mu}. The twelve terms of Theorem 1.2 are terms of a SUM, so the bound is adequate only if ALL twelve are << x, and each term therefore contributes one fail option. Written E_i = x^{A_i + C_i mu - B_i gamma}, the fail atom for term i is A_i + C_i mu - B_i gamma >= 1. Options are listed in the order of the terms in Theorem 1.2; options 1-9 are the paper's printed E1-E9 and options 10-12 are the three terms X^{1/4}H^{1/2}M^{1/2}N, H^{1/2}MN, X^{-1/2}HMN that section 5.4 does not print. Option 12 has no mu dependence and acts as a pure parameter gate (gamma >= 1/2).",
+   "fail_options": [
+    [
+     [
+      [
+       "249/2002"
+      ],
+      [
+       "813/1001",
+       "-1211/1430"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-72/3269"
+      ],
+      [
+       "9663/13076",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "1461/3269"
+      ],
+      [
+       "12729/13076",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "4023/20020"
+      ],
+      [
+       "17793/20020",
+       "-2641/2860"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-5/12"
+      ],
+      [
+       "5/12",
+       "-13/12"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1/3"
+      ],
+      [
+       "1/3",
+       "-2/3"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "7/12"
+      ],
+      [
+       "11/12",
+       "-13/12"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "-1/12"
+      ],
+      [
+       "7/12",
+       "-11/12"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "1245/6944"
+      ],
+      [
+       "633/868",
+       "-773/992"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "1/2"
+      ],
+      [
+       "3/4",
+       "-1/2"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "1/2"
+      ],
+      [
+       "1",
+       "-1"
+      ]
+     ]
+    ],
+    [
+     [
+      [
+       "0"
+      ],
+      [
+       "1/2",
+       "-1"
+      ]
+     ]
+    ]
+   ]
+  }
+ },
+ "pieces": {
+  "typeII_window": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "1",
+      "-2"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "0",
+      "1"
+     ]
+    ]
+   ],
+   "tools": [
+    "L_typeII"
+   ]
+  },
+  "typeIprime_window": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "-2/3",
+      "0"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "-1",
+      "2"
+     ]
+    ]
+   ],
+   "tools": [
+    "L_typeII",
+    "T_thm12"
+   ]
+  },
+  "typeI_window": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "1",
+      "-1/2"
+     ]
+    ]
+   ],
+   "tools": [
+    "L_typeI"
+   ]
+  },
+  "gate_l5_lower": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "1",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0"
+     ],
+     [
+      "5/6",
+      "-1"
+     ]
+    ]
+   ],
+   "tools": []
+  },
+  "gate_l5_upper": {
+   "region": [
+    [
+     [
+      "-1"
+     ],
+     [
+      "0",
+      "0"
+     ]
+    ],
+    [
+     [
+      "1"
+     ],
+     [
+      "1",
+      "0"
+     ]
+    ],
+    [
+     [
+      "0"
+     ],
+     [
+      "-31/32",
+      "1"
+     ]
+    ]
+   ],
+   "tools": []
+  }
+ },
+ "slices": [
+  "5/6",
+  "6/7",
+  "861/1000",
+  "7300/8477",
+  "8886224/10318869",
+  "2426/2817",
+  "13/15",
+  "7/8"
+ ],
+ "expected_coverage": {
+  "threshold": "7300/8477",
+  "witness_iff": "le",
+  "note": "Same transcription as guo_guo_lu.json with the exponent pair replaced by hull vertex n=7 of ANTEDB blueprint Table 5.2. Not a claim of the paper."
+ },
+ "ablations": {
+  "no_typeIprime_bound": {
+   "remove_tools": [
+    "T_thm12"
+   ],
+   "expected_threshold": "13/15",
+   "note": "as in the base instance"
+  }
+ }
+}

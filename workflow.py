@@ -27,6 +27,8 @@ workflow flags it: the fix is to add a slice inside the reported interval
 """
 import json, os, subprocess, sys, glob
 
+PY = sys.executable  # the interpreter running this script, portable across platforms
+
 def run(cmd):
     return subprocess.run(cmd, capture_output=True, text=True)
 
@@ -42,12 +44,18 @@ def censusable(path):
 
 def one(path, do_mutate=False):
     ctrl = is_control(path)
-    r = run(["python3", "certify.py", path])
+    r = run([PY, "certify.py", path])
     passed = (r.returncode == 0)
     if ctrl:
+        if not passed and not r.stdout.strip():
+            return "ENGINE DID NOT RUN (control verdict meaningless)", False, ""
         status = "OK (control failed as required)" if not passed else "BROKEN CONTROL: it passed"
         return status, not passed, ""
     if not passed:
+        if not r.stdout.strip():
+            return ("ENGINE DID NOT RUN (no output; interpreter or path problem): "
+                    + r.stderr.strip().splitlines()[-1] if r.stderr.strip() else
+                    "ENGINE DID NOT RUN (no output)"), False, ""
         tail = "\n".join(r.stdout.strip().splitlines()[-6:])
         return "CERTIFY FAILED", False, tail
     detail = r.stdout.strip().splitlines()[-1]
@@ -56,11 +64,11 @@ def one(path, do_mutate=False):
         tsv = path.replace(".json", ".mutation.tsv")
         if os.path.exists(tsv):
             os.unlink(tsv)
-        m = run(["python3", "mutate.py", path])
+        m = run([PY, "mutate.py", path])
         last = m.stdout.strip().splitlines()[-1] if m.stdout.strip() else "mutate: no output"
         extra = " | " + last.replace("batch 1/1: ", "")
         if censusable(path):
-            c = run(["python3", "mutant_census.py", path])
+            c = run([PY, "mutant_census.py", path])
             cl = c.stdout.strip().splitlines()
             summary = next((l for l in cl if l.startswith(path)), "")
             extra += " | census: " + summary.split(": ", 1)[-1] if summary else ""

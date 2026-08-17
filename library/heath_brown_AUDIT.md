@@ -1,6 +1,6 @@
 # Heath-Brown 1983 (Pjateckii-Sapiro PNT): certification audit note
 
-Instance: `heath_brown.json` (coverage mode). Source: D. R. Heath-Brown, "The Pjateckii-Sapiro Prime Number Theorem," *J. Number Theory* 16 (1983), 242-266. Certified claim: with the paper's design substitutions, a total-failure witness exists iff gamma <= 662/755, matching the published theorem `pi_c(x) ~ x/(c log x)` for `1 < c < 755/662`. Run: `python3 certify.py heath_brown.json` passes 52/52 checks (13 slices, base toolkit plus three ablations).
+Instance: `heath_brown.json` (coverage mode). Source: D. R. Heath-Brown, "The Pjateckii-Sapiro Prime Number Theorem," *J. Number Theory* 16 (1983), 242-266. Certified claim: with the paper's design substitutions, a coverage-gap witness exists iff gamma <= 662/755, matching the published theorem `pi_c(x) ~ x/(c log x)` for `1 < c < 755/662`. Run: `python3 certify.py heath_brown.json` passes 52/52 checks (13 slices, base toolkit plus three ablations).
 
 ## Linearity verdict (the census question for this row)
 

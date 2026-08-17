@@ -8,35 +8,43 @@ A certificate does more than confirm the headline number. It identifies which co
 
 ## What is in the repository
 
-The engine and its harness are `certify.py` (the certifier), `mutate.py` (perturbs every coefficient and reruns), `mutant_census.py` (classifies why each perturbation was or was not caught), and `workflow.py` (runs everything). `SCHEMA.md` documents the instance format and the transcription discipline.
+The engine and its harness are `certify.py` (the certifier), `mutate.py` (perturbs every coefficient and reruns), `mutant_census.py` (classifies why each perturbation was or was not caught), and `check.py` (runs everything). Instances live in `library/`. The CI configuration in `.github/workflows/check.yml` runs the fast pass on every push. `SCHEMA.md` documents the instance format and the transcription discipline.
 
 Each certified paper contributes an instance file such as `heath_brown.json`, an audit note such as `heath_brown_AUDIT.md` recording what was found, and two machine-generated result files, `*.mutation.tsv` and `*.census.tsv`. Two instances whose names begin with `CONTROL` are deliberately broken and must fail. They exist to prove the engine can detect error, and the workflow treats their failure as success.
 
-## Running it
+## Command reference
 
-Everything needs only Python 3, no packages.
-
-```
-python3 workflow.py --all
-```
-
-certifies the entire library in about a minute and prints one line per instance. The expected output ends with `LIBRARY CONSISTENT`. Run this after any edit.
+Everything needs only Python 3, no packages. There is one entry point, `check.py`, and two tools it orchestrates that can also be run directly.
 
 ```
-python3 workflow.py myinstance.json --deep
+python check.py --library              certify every instance in library/,
+                                       controls included. Seconds. Run
+                                       after any edit. This is also what
+                                       CI runs on every push.
+python check.py --library --deep       full pipeline on every instance:
+                                       certify, fresh mutation run, mutant
+                                       census. Minutes. Run before a
+                                       release or after changing slices
+                                       or the harness.
+python check.py library/foo.json         one instance, certify only.
+python check.py library/foo.json --deep  one instance, full pipeline.
 ```
 
-runs the full pipeline on one instance: certification, a fresh mutation run, and (for coverage instances) the mutant census. This takes minutes, and is the command to run once after finishing a new instance or changing its slices. `--all --deep` does it for the whole library and is a pre-release job, not a routine one.
+`check.py` also lints before certifying (structural JSON problems fail loudly, style problems warn) and flags any committed `.mutation.tsv` whose row count no longer matches the instance, so a stale result file fails the consistency check rather than silently documenting an old version. An instance whose name begins with `CONTROL` must fail certification, and the checker reports it as OK only when the engine actually ran and mismatched.
+
+The two underlying tools are standalone, and there are two situations where running them directly is the right choice. First, long mutation runs: `python mutate.py library/foo.json --chunk 2/4` runs a quarter of the mutants and appends to the TSV, which is how large instances are done under a timeout. Note that mutate.py always appends, by design, so delete the TSV before a fresh un-chunked run (`--deep` does this for you). Second, the bracket-placement loop: `python mutant_census.py library/foo.json` recomputes every verdict from the instance alone, without needing a mutation run, so while placing slices the cheap cycle is edit, census, check that BRACKETABLE is gone, repeat, and only then one `--deep` to regenerate the committed TSVs.
 
 ## The workflow for certifying a new paper
 
+The word workflow here means the human procedure. The checker above mechanizes steps 2 and 4 of it; steps 1, 3 and 5 cannot be mechanized and are the actual work.
+
 **Step 1, transcribe.** Read the proof and extract every inequality that participates in the threshold, writing each as a linear constraint in the block coordinates with a right-hand side affine in the parameter. Record the paper's own design substitutions (a fixed exponent pair, a truncation height, a splitting parameter) and either pin them with provenance or free them so the certificate tests them. The rules for doing this honestly, including the sandwich discipline and the treatment of constructed edges, are in `SCHEMA.md`, and the existing instances are the worked examples. This step is the mathematics. Everything after it is checking.
 
-**Step 2, certify.** Write the instance JSON with the published threshold declared in `expected_coverage` (or `expected_profile` for min-max instances), pick slices that include the threshold itself, values tightly bracketing it, every runner-up facet, and any validity edges. Then `python3 workflow.py myinstance.json`. A mismatch at this stage means a transcription error or a paper error, and telling them apart is step 1's problem, not the engine's.
+**Step 2, certify.** Write the instance JSON with the published threshold declared in `expected_coverage` (or `expected_profile` for min-max instances), pick slices that include the threshold itself, values tightly bracketing it, every runner-up facet, and any validity edges. Then `python check.py library/myinstance.json`. A mismatch at this stage means a transcription error or a paper error, and telling them apart is step 1's problem, not the engine's.
 
 **Step 3, cross-check if warranted.** For a result that matters, reproduce the verdict by an independent route before trusting it, for instance a direct interval scan written from the instance file rather than through `certify.py`. The Guo-Guo-Lu instance was checked this way at all sixty original checks.
 
-**Step 4, mutation and census.** `python3 workflow.py myinstance.json --deep`. The mutation run perturbs every coefficient by 1/50 in both directions and records which perturbations some slice catches (killed) and which survive. The census then classifies every survivor: UNOBSERVABLE means no slice placement could ever catch it, because the coefficient sits in certified slack, and this class is mathematical content, since it coincides with the paper's non-binding conditions. BRACKETABLE means a slice placed in the reported interval would catch it, so add that slice to the instance and rerun until no BRACKETABLE survivors remain. OUT_OF_REACH means the perturbation moves a boundary by less than the gap to the nearest slice-observable change. The goal state is zero BRACKETABLE, everything else explained.
+**Step 4, mutation and census.** `python check.py library/myinstance.json --deep`, or the standalone loop described in the command reference. The mutation run perturbs every coefficient by 1/50 in both directions and records which perturbations some slice catches (killed) and which survive. The census then classifies every survivor: UNOBSERVABLE means no slice placement could ever catch it, because the coefficient sits in certified slack, and this class is mathematical content, since it coincides with the paper's non-binding conditions. BRACKETABLE means a slice placed in the reported interval would catch it, so add that slice to the instance and rerun until no BRACKETABLE survivors remain. OUT_OF_REACH means the perturbation moves a boundary by less than the gap to the nearest slice-observable change. The goal state is zero BRACKETABLE, everything else explained.
 
 **Step 5, audit note.** Write `myinstance_AUDIT.md` recording the linearity verdict, the design substitutions and their provenance, the facet map with the binding facet and runner-up, any errors found in the paper and whether they propagate, the ablation results, and the survivor classification. The note is where findings live. The instance comment carries the transcription decisions a future auditor needs in order to re-derive the encoding from the paper.
 

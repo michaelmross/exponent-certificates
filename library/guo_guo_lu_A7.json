@@ -1,5 +1,5 @@
 {
- "name": "VARIANT (not the paper): Guo-Guo-Lu architecture at hull vertex n=7 = A(18/199, 593/796)",
+ "name": "VARIANT (not the paper): Guo-Guo-Lu architecture at hull vertex n=7 = A(18/199, 593/796), threshold 7300/8477",
  "mode": "coverage",
  "comment": "Variant of guo_guo_lu.json, identical except for the exponent pair, used to check whether the paper's threshold is optimal over the currently known hull of exponent pairs. Pair: (9/217, 1461/1736) = A(18/199, 593/796), vertex n=7 of Table 5.2 in the ANTEDB blueprint. This is NOT a claim made by Guo, Guo and Lu.",
  "variables": [

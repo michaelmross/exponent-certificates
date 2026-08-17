@@ -1,4 +1,4 @@
-# exponent-certificates
+# Exponent Threshold Certification
 
 A tool for certifying published exponent thresholds in analytic number theory as exact linear-programming facets, together with a growing library of certified papers.
 

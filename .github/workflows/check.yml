@@ -1,0 +1,14 @@
+# CI: certify the whole library on every push and pull request.
+# This is the fast pass only (seconds per instance). The deep pass
+# (mutation + census) is run locally before release via:
+#     python check.py --library --deep
+name: check-library
+on: [push, pull_request]
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.x" }
+      - run: python check.py --library

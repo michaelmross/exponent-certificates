@@ -37,10 +37,37 @@ import json, os, subprocess, sys, glob
 
 PY = sys.executable
 HERE = os.path.dirname(os.path.abspath(__file__))
-def tool(name): return os.path.join(HERE, name)
+
+def _find_engine_dir():
+    """Locate the directory holding certify.py: beside this script, or a
+    shallow search of the repository. Keeps check.py layout-agnostic."""
+    if os.path.exists(os.path.join(HERE, "certify.py")):
+        return HERE
+    hits = []
+    for root, dirs, files in os.walk(HERE):
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d != "__pycache__"
+                   and os.path.relpath(root, HERE).count(os.sep) < 2]
+        if "certify.py" in files:
+            hits.append(root)
+    if not hits:
+        sys.exit(f"cannot find certify.py anywhere under {HERE}; "
+                 "keep the engine scripts in the repository (any folder).")
+    if len(hits) > 1:
+        sys.exit("found more than one certify.py: " + ", ".join(hits)
+                 + " -- remove the duplicate.")
+    return hits[0]
+
+ENGINE = _find_engine_dir()
+def tool(name):
+    p = os.path.join(ENGINE, name)
+    if not os.path.exists(p):
+        sys.exit(f"{name} is missing from {ENGINE}; the engine scripts must live together.")
+    return p
 
 def run(cmd, cwd=None):
-    return subprocess.run(cmd, capture_output=True, text=True, cwd=cwd or HERE)
+    # cwd defaults to the engine directory, because mutate.py invokes
+    # certify.py by relative path from its own working directory.
+    return subprocess.run(cmd, capture_output=True, text=True, cwd=cwd or ENGINE)
 
 # ---------------- lint ----------------
 

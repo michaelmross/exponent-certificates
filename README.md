@@ -21,17 +21,15 @@ Each certified paper contributes an instance file such as `heath_brown.json`, an
 Everything needs only Python 3, no packages. There is one entry point, `check.py`, and two tools it orchestrates that can also be run directly.
 
 ```
-python check.py --library              certify every instance in library/,
-                                       controls included. Seconds. Run
-                                       after any edit. This is also what
-                                       CI runs on every push.
-python check.py --library --deep       full pipeline on every instance:
-                                       certify, fresh mutation run, mutant
-                                       census. Minutes. Run before a
-                                       release or after changing slices
-                                       or the harness.
-python check.py library/foo.json         one instance, certify only.
-python check.py library/foo.json --deep  one instance, full pipeline.
+python check.py --library                  Certify every instance in /library, controls included.
+                                           Run after any edit. (This is also what CI runs on every push.)
+                                           Execution time: seconds.
+python check.py --library --deep           Full pipeline on every instance: certify, fresh mutation run,
+                                           mutant census. Run before a release or after changing slices                            
+                                           or the harness.
+                                           Execution time: minutes                                      
+python check.py library/foo.json           One instance, certify only.
+python check.py library/foo.json --deep    One instance, full pipeline.
 ```
 
 `check.py` also lints before certifying (structural JSON problems fail loudly, style problems warn) and flags any committed `.mutation.tsv` whose row count no longer matches the instance, so a stale result file fails the consistency check rather than silently documenting an old version. Every certify run writes its full report to `INSTANCE.certify.txt` beside the instance (suppress with `--no-report`): witness locations, binding atoms, and per-slice checks, committed like the TSVs so every fact an audit note cites is a diffable artifact. Because the output is deterministic, the checker treats any byte change against the committed report as a failure even when the verdict still passes, which catches a moved witness or a changed check count that the verdict alone cannot see. An instance whose name begins with `CONTROL` must fail certification, and the checker reports it as OK only when the engine actually ran and mismatched.

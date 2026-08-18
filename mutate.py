@@ -11,7 +11,7 @@ slice and ablation, which is itself information: the surviving set maps
 the non-load-bearing coefficients of the transcription at the declared
 slices.
 
-The baseline run must pass, or nothing is measured.
+The baseline run must pass, or nothing is measured. 
 
 Usage: python3 mutate.py INSTANCE.json [--chunk k/n]
   --chunk 1/2 runs the first half of the mutant list (for time-limited

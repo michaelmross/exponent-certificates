@@ -4,6 +4,8 @@
 
 A tool for certifying published exponent thresholds in analytic number theory as exact linear-programming facets, together with a growing library of certified papers.
 
+Companion note: [A Tool for Certifying Exponent Thresholds as Exact Linear-Programming Facets](https://doi.org/10.5281/zenodo.21986255)
+
 Many theorems in this area have the shape "the result holds for c below some odd-looking fraction." That fraction is almost never explained. It is the output of a system of competing inequalities, and the paper typically prints the winning condition and moves on. This repository turns the system of inequalities itself into data (a JSON file), and an engine (`certify.py`) recomputes the threshold from that data by exact rational arithmetic, with no floating point anywhere. When the recomputed threshold matches the published one at every tested parameter value, the certificate passes. When it does not, either the transcription is wrong or the paper is, and both outcomes have happened.
 
 A certificate does more than confirm the headline number. It identifies which condition actually produces the threshold (the binding facet), which printed conditions turn out never to matter (slack, or vacuous), what happens when each estimate is deleted (ablations), and which coefficients the certificate genuinely pins down as opposed to merely carries (the mutation census). The audit notes in this repository record several findings of exactly these kinds in the certified papers, none affecting the theorems, all invisible without doing this.

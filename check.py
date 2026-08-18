@@ -19,7 +19,7 @@
 
 mutate.py and mutant_census.py are also standalone tools; this script
 only orchestrates them. See README, "Command reference", for when to
-run them directly.
+run them directly. 
 
 The engine scripts (certify.py, mutate.py, mutant_census.py) are located
 relative to this file, so the workflow can be invoked from any working

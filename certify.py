@@ -4,7 +4,7 @@ certify.py -- Exact certification of sieve threshold profiles, instance as data.
 
 Generalizes fm_exact.py (companion to "A One-Hypothesis Reduction for
 Primes in [4n^2-n, 4n^2+n]", Appendix A). The engine knows nothing about
-any particular sieve problem; a problem INSTANCE is a JSON file declaring:
+any particular sieve problem; a problem INSTANCE is a JSON file declaring: 
 
   variables    block coordinates x (any dimension), one of which is the
                OBJECTIVE (the level exponent to be minimized);

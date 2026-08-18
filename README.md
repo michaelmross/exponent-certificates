@@ -12,7 +12,7 @@ A certificate does more than confirm the headline number. It identifies which co
 
 ## What is in the repository
 
-The engine and its harness are `certify.py` (the certifier), `mutate.py` (perturbs every coefficient and reruns), `mutant_census.py` (classifies why each perturbation was or was not caught), and `check.py` (runs everything). Instances live in `library/`. The CI configuration in `.github/workflows/check.yml` runs the fast pass on every push. `SCHEMA.md` documents the instance format and the transcription discipline.
+The engine and its harness are `certify.py` (the certifier), `mutate.py` (perturbs every coefficient and reruns), `mutant_census.py` (classifies why each perturbation was or was not caught), and `check.py` (runs everything). JSON instances live in `library/`. The CI configuration in `.github/workflows/check.yml` runs the fast pass on every push. `SCHEMA.md` documents the instance format and the transcription discipline.
 
 Each certified paper contributes an instance file such as `heath_brown.json`, an audit note such as `heath_brown_AUDIT.md` recording what was found, and three machine-generated result files: the full certification report `*.certify.txt`, and the mutation results `*.mutation.tsv` and `*.census.tsv`. Two instances whose names begin with `CONTROL` are deliberately broken and must fail. They exist to prove the engine can detect error, and the workflow treats their failure as success.
 
@@ -40,7 +40,7 @@ The two underlying tools are standalone, and there are two situations where runn
 
 The word workflow here means the human procedure. The checker above mechanizes steps 2 and 4 of it; steps 1, 3 and 5 cannot be mechanized and are the actual work.
 
-**Step 1, transcribe.** Read the source document and extract every inequality that participates in the threshold, writing each as a linear constraint in the block coordinates with a right-hand side affine in the parameter. Record the paper's own design substitutions (a fixed exponent pair, a truncation height, a splitting parameter) and either pin them with provenance or free them so the certificate tests them. The rules for doing this honestly, including the sandwich discipline and the treatment of constructed edges, are in `SCHEMA.md`, and the existing instances are the worked examples. A capable AI assistant can be tasked with executing this process.
+**Step 1, transcribe.** Read the source document and extract every inequality that participates in the threshold, writing each as a linear constraint in the block coordinates with a right-hand side affine in the parameter. Record the paper's own design substitutions (a fixed exponent pair, a truncation height, a splitting parameter) and either hard-code the value as a constant or promote it to a block variable to be certified. The rules for doing this are in `SCHEMA.md`, and the existing JSON instances are the worked examples. A capable AI assistant can be tasked with executing this procedure.
 
 **Step 2, certify.** Write the instance JSON with the published threshold declared in `expected_coverage` (or `expected_profile` for min-max instances), pick slices that include the threshold itself, values tightly bracketing it, every runner-up facet, and any validity edges. Then `python check.py library/myinstance.json`. A mismatch at this stage means a transcription error or a paper error, and telling them apart is step 1's problem, not the engine's.
 

@@ -1,0 +1,26 @@
+instance: VARIANT (not the paper): Guo-Guo-Lu architecture at hull vertex n=7 = A(18/199, 593/796), threshold 7300/8477
+variables: ['mu']  objective: mu  parameters: ['gamma']
+
+coverage witnesses (base toolkit):
+  gamma=5/6:      GAP WITNESS  (typeII_window: mu = 2/3; typeIprime_window: mu = 2/3; typeI_window: mu = 1/2; gate_l5_lower: mu = 0)   [OK: expected witness]
+  gamma=6/7:      GAP WITNESS  (typeII_window: mu = 5/7; typeIprime_window: mu = 2/3; typeI_window: mu = 4/7)   [OK: expected witness]
+  gamma=861/1000:      GAP WITNESS  (typeIprime_window: mu = 2/3)   [OK: expected witness]
+  gamma=7300/8477:      GAP WITNESS  (typeIprime_window: mu = 2/3)   [OK: expected witness]
+  gamma=8886224/10318869:          covered  (-)   [OK: expected covered]
+  gamma=2426/2817:          covered  (-)   [OK: expected covered]
+  gamma=13/15:          covered  (-)   [OK: expected covered]
+  gamma=7/8:          covered  (-)   [OK: expected covered]
+  => checked against threshold 7300/8477 (witness iff slice <= threshold)
+
+coverage witnesses (ablation 'no_typeIprime_bound': remove ['T_thm12']):
+  gamma=5/6:      GAP WITNESS  (typeII_window: mu = 2/3; typeIprime_window: mu = 2/3; typeI_window: mu = 1/2; gate_l5_lower: mu = 0)   [OK: expected witness]
+  gamma=6/7:      GAP WITNESS  (typeII_window: mu = 5/7; typeIprime_window: mu = 2/3; typeI_window: mu = 4/7)   [OK: expected witness]
+  gamma=861/1000:      GAP WITNESS  (typeIprime_window: mu = 2/3)   [OK: expected witness]
+  gamma=7300/8477:      GAP WITNESS  (typeIprime_window: mu = 2/3)   [OK: expected witness]
+  gamma=8886224/10318869:      GAP WITNESS  (typeIprime_window: mu = 2/3)   [OK: expected witness]
+  gamma=2426/2817:      GAP WITNESS  (typeIprime_window: mu = 2/3)   [OK: expected witness]
+  gamma=13/15:      GAP WITNESS  (typeIprime_window: mu = 2/3)   [OK: expected witness]
+  gamma=7/8:          covered  (-)   [OK: expected covered]
+  => checked against threshold 13/15 (witness iff slice <= threshold)
+
+CERTIFICATE PASSED -- 16/16 checks match the declared thresholds exactly

@@ -1,0 +1,14 @@
+instance: Dimitrov (2025): cube-free pairs [n^c tan^t(log n)], [.]+1, theta*(c) = (2c+1)/4 on [7/6, 3/2)
+variables: ['theta', 'zeta', 'eta']  objective: theta  parameters: ['c']
+
+profile:
+  c=7/6:  zeta = 5/6  (error-terms: 5/6)   expected 5/6  [OK]
+  c=6/5:  zeta = 17/20  (error-terms: 17/20)   expected 17/20  [OK]
+  c=13/10:  zeta = 9/10  (error-terms: 9/10)   expected 9/10  [OK]
+  c=4/3:  zeta = 11/12  (error-terms: 11/12)   expected 11/12  [OK]
+  c=7/5:  zeta = 19/20  (error-terms: 19/20)   expected 19/20  [OK]
+  c=29/20:  zeta = 39/40  (error-terms: 39/40)   expected 39/40  [OK]
+  c=149/100:  zeta = 199/200  (error-terms: 199/200)   expected 199/200  [OK]
+  c=3/2:  zeta = 1  (error-terms: 1)   expected 1  [OK]
+
+CERTIFICATE PASSED -- 8/8 slices match the declared profile exactly

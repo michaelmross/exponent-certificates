@@ -1,0 +1,11 @@
+instance: Cao-Zhai (JTNB 1998): squarefree [n^c], optimal error exponent theta*(c) = 36(c+1)/97
+variables: ['theta', 'zeta1', 'zeta']  objective: theta  parameters: ['c']
+
+profile:
+  c=3/2:  zeta = 90/97  (error-terms: 90/97)   expected 90/97  [OK]
+  c=14/9:  zeta = 92/97  (error-terms: 92/97)   expected 92/97  [OK]
+  c=8/5:  zeta = 468/485  (error-terms: 468/485)   expected 468/485  [OK]
+  c=5/3:  zeta = 96/97  (error-terms: 96/97)   expected 96/97  [OK]
+  c=61/36:  zeta = 1  (error-terms: 1)   expected 1  [OK]
+
+CERTIFICATE PASSED -- 5/5 slices match the declared profile exactly

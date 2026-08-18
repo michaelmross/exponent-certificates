@@ -1,0 +1,31 @@
+instance: CONTROL: Rivat-Sargos system vs the secondary-literature misquote c < 2817/2425
+variables: ['nu']  objective: nu  parameters: ['gamma']
+
+coverage witnesses (base toolkit):
+  gamma=43/50:      GAP WITNESS  (typeIprime: nu = 179/550)   [OK: expected witness]
+  gamma=2426/2817:      GAP WITNESS  (typeIprime: nu = 1/3)   [MISMATCH: expected covered]
+  gamma=4307/5000:          covered  (-)   [OK: expected covered]
+  gamma=380/441:          covered  (-)   [OK: expected covered]
+  gamma=13/15:          covered  (-)   [OK: expected covered]
+  gamma=9/10:          covered  (-)   [OK: expected covered]
+  => checked against threshold 2425/2817 (witness iff slice <= threshold)
+
+coverage witnesses (ablation 'theoreme-2-toolkit': remove ['RS-T1']):
+  gamma=43/50:      GAP WITNESS  (typeIprime: nu = 371/1150)   [OK: expected witness]
+  gamma=2426/2817:      GAP WITNESS  (typeIprime: nu = 7133/21597)   [OK: expected witness]
+  gamma=4307/5000:      GAP WITNESS  (typeIprime: nu = 38129/115000)   [OK: expected witness]
+  gamma=380/441:      GAP WITNESS  (typeIprime: nu = 1/3)   [OK: expected witness]
+  gamma=13/15:          covered  (-)   [OK: expected covered]
+  gamma=9/10:          covered  (-)   [OK: expected covered]
+  => checked against threshold 380/441 (witness iff slice <= threshold)
+
+coverage witnesses (ablation 'pre-RS-toolkit': remove ['RS-T1', 'RS-T2']):
+  gamma=43/50:      GAP WITNESS  (typeIprime: nu = 3/10)   [OK: expected witness]
+  gamma=2426/2817:      GAP WITNESS  (typeIprime: nu = 862/2817)   [OK: expected witness]
+  gamma=4307/5000:      GAP WITNESS  (typeIprime: nu = 307/1000)   [OK: expected witness]
+  gamma=380/441:      GAP WITNESS  (typeIprime: nu = 136/441)   [OK: expected witness]
+  gamma=13/15:      GAP WITNESS  (typeIprime: nu = 1/3)   [OK: expected witness]
+  gamma=9/10:          covered  (-)   [OK: expected covered]
+  => checked against threshold 13/15 (witness iff slice <= threshold)
+
+CERTIFICATE FAILED -- 1 of 18 checks mismatch (see MISMATCH lines)

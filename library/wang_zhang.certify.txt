@@ -1,0 +1,13 @@
+instance: Wang-Zhang (Czech. Math. J. 2023): divisor function over PS sequences, threshold c* = 6/5 (beta* = 5/6)
+variables: ['j']  objective: j  parameters: ['beta']
+
+coverage witnesses (base toolkit):
+  beta=7/9:          covered  (-)   [OK: expected covered]
+  beta=4/5:          covered  (-)   [OK: expected covered]
+  beta=33/40:          covered  (-)   [OK: expected covered]
+  beta=5/6:      GAP WITNESS  (design-window: j = 1/6)   [OK: expected witness]
+  beta=6/7:      GAP WITNESS  (design-window: j = 1/7)   [OK: expected witness]
+  beta=9/10:      GAP WITNESS  (design-window: j = 1/10)   [OK: expected witness]
+  => checked against threshold 5/6 (witness iff slice >= threshold)
+
+CERTIFICATE PASSED -- 6/6 checks match the declared thresholds exactly

@@ -1,0 +1,10 @@
+instance: Dimitrov cube-free: lower branch theta*(c) = (c+3)/5 on (1, 7/6]
+variables: ['theta', 'zeta', 'eta']  objective: theta  parameters: ['c']
+
+profile:
+  c=21/20:  zeta = 81/100  (error-terms: 81/100)   expected 81/100  [OK]
+  c=11/10:  zeta = 41/50  (error-terms: 41/50)   expected 41/50  [OK]
+  c=9/8:  zeta = 33/40  (error-terms: 33/40)   expected 33/40  [OK]
+  c=7/6:  zeta = 5/6  (error-terms: 5/6)   expected 5/6  [OK]
+
+CERTIFICATE PASSED -- 4/4 slices match the declared profile exactly

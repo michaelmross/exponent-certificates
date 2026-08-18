@@ -1,0 +1,15 @@
+instance: Jn tail sieve: zeta(gamma) = (6-5*gamma)/4 on gamma in [1, 6/5]
+variables: ['mu', 'eta', 'beta']  objective: beta  parameters: ['gamma']
+
+profile:
+  gamma=1:  zeta = 1/4  (typeI: 1/4, typeII: 1/4)   expected 1/4  [OK]
+  gamma=21/20:  zeta = 3/16  (typeI: 3/16, typeII: 3/16)   expected 3/16  [OK]
+  gamma=11/10:  zeta = 1/8  (typeI: 1/8, typeII: 1/8)   expected 1/8  [OK]
+  gamma=23/20:  zeta = 1/16  (typeI: 1/16, typeII: 1/16)   expected 1/16  [OK]
+  gamma=6/5:  zeta = 0  (typeI: 0, typeII: 0)   expected 0  [OK]
+  gamma=5/4:  zeta = 0  (typeI: 0, typeII: 0)   expected 0  [OK]
+
+ablations (tool removals; zeta can only decrease):
+  drop-FI-family (remove ['FI0', 'FI1', 'FI2']): profile UNCHANGED -- these tools are not needed for the optimum
+
+CERTIFICATE PASSED -- 6/6 slices match the declared profile exactly

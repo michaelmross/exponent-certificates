@@ -1,0 +1,15 @@
+instance: CONTROL (expected FAILED): jn_tail with one corrupted profile coefficient
+variables: ['mu', 'eta', 'beta']  objective: beta  parameters: ['gamma']
+
+profile:
+  gamma=1:  zeta = 11/48  (typeI: 11/48, typeII: 1/4)   expected 1/4  [MISMATCH]
+  gamma=21/20:  zeta = 57/320  (typeI: 57/320, typeII: 3/16)   expected 3/16  [MISMATCH]
+  gamma=11/10:  zeta = 29/240  (typeI: 1/8, typeII: 29/240)   expected 1/8  [MISMATCH]
+  gamma=23/20:  zeta = 17/480  (typeI: 1/16, typeII: 17/480)   expected 1/16  [MISMATCH]
+  gamma=6/5:  zeta = 0  (typeI: 0, typeII: 0)   expected 0  [OK]
+  gamma=5/4:  zeta = 0  (typeI: 0, typeII: 0)   expected 0  [OK]
+
+ablations (tool removals; zeta can only decrease):
+  drop-FI-family (remove ['FI0', 'FI1', 'FI2']): profile UNCHANGED -- these tools are not needed for the optimum
+
+CERTIFICATE FAILED -- 4 of 6 slices mismatch (see MISMATCH lines)

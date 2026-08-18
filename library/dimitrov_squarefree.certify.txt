@@ -1,0 +1,14 @@
+instance: Dimitrov (Springer Optim. Appl. 207, 2023): square-free [n^c tan^t(log n)], theta*(c) = (4c+1)/7 on [16/13, 3/2)
+variables: ['theta', 'zeta', 'eta']  objective: theta  parameters: ['c']
+
+profile:
+  c=16/13:  zeta = 11/13  (error-terms: 11/13)   expected 11/13  [OK]
+  c=5/4:  zeta = 6/7  (error-terms: 6/7)   expected 6/7  [OK]
+  c=13/10:  zeta = 31/35  (error-terms: 31/35)   expected 31/35  [OK]
+  c=4/3:  zeta = 19/21  (error-terms: 19/21)   expected 19/21  [OK]
+  c=7/5:  zeta = 33/35  (error-terms: 33/35)   expected 33/35  [OK]
+  c=29/20:  zeta = 34/35  (error-terms: 34/35)   expected 34/35  [OK]
+  c=149/100:  zeta = 174/175  (error-terms: 174/175)   expected 174/175  [OK]
+  c=3/2:  zeta = 1  (error-terms: 1)   expected 1  [OK]
+
+CERTIFICATE PASSED -- 8/8 slices match the declared profile exactly

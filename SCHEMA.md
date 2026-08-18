@@ -2,9 +2,15 @@
 
 An INSTANCE is a JSON file declaring a sieve/coverage optimization problem
 in exact rational arithmetic. The engine (certify.py) is problem-agnostic:
-everything problem-specific lives in the instance. Two worked instances
-accompany this spec: `jn_tail.json` (level mode) and `rs_pns.json`
-(coverage mode). 
+everything problem-specific lives in the instance. The certified
+library in `library/` accompanies this spec: twelve instances spanning
+both modes, with `jn_tail.json` the level-mode exemplar and
+`rs_pns.json` the coverage-mode exemplar, plus two CONTROL instances
+(names beginning `CONTROL`) that must FAIL certification and exist to
+prove the engine can detect error. Each instance ships with its
+committed evidence: the full run report `*.certify.txt`, the mutation
+results `*.mutation.tsv`, the survivor classification `*.census.tsv`,
+and a hand-written audit note `*_AUDIT.md`.
 
 ## 1. File anatomy
 
@@ -63,8 +69,9 @@ one fail option per applicable tool, forms the polytope
 and, over each nonempty polytope, computes the exact minimum of the
 objective by exhaustive vertex enumeration over Q (all n-subsets of
 rows, Gaussian elimination in fractions.Fraction, feasibility check
-against all rows). A point of such a polytope is a TOTAL-FAILURE
-WITNESS: a block configuration where every tool fails simultaneously.
+against all rows). A point of such a polytope is a
+COVERAGE-GAP WITNESS (engine output: `GAP WITNESS`): a block
+configuration where every tool fails simultaneously.
 
 Because inequalities are closed and margins (eta, epsilon, kappa) are
 dropped, certified thresholds are attained on facets: at the critical
@@ -100,8 +107,17 @@ instance author owes, in `comment` and per-tool `provenance`:
    easier, so certified thresholds are conservative), and the hand
    argument that closes the gap on the relevant region.
 2. DESIGN CHOICES: parameters the paper fixes rather than quantifies
-   (e.g. alpha = 1-gamma in Rivat-Sargos Section 5). These become
-   substitutions, not variables, and must be flagged as such.
+   (e.g. alpha = 1-gamma in Rivat-Sargos Section 5). Each forces a
+   documented decision, never a silent one. PIN it (a constant, with
+   provenance) when freeing it would leave the rational-affine layer
+   or change which constraints exist: exponent pairs, the identity
+   parameter l, a derivative-test order q. FREE it (a block variable)
+   when it enters affinely, so the certificate tests the choice
+   instead of inheriting it: this is how dimitrov_squarefree.json
+   found the paper's split suboptimal. A contestable pin that cannot
+   be freed gets a VARIANT instance at a different pin
+   (guo_guo_lu_A7.json), which performs the optimality test the LP
+   cannot.
 3. EDGE CONVENTIONS: window edges the paper covers by construction
    (eta-shifted endpoints) carry no fail atom; only genuine caps do.
    Say which edges were so treated.
@@ -133,11 +149,25 @@ Step 4. Detect scope boundaries: any condition that is not
 Step 5. Encode, choosing slices that bracket every published threshold,
         including thresholds of the paper's intermediate theorems as
         ablations where the toolkit difference is a tool subset.
-Step 6. Run. Exact reproduction of all published rationals = the
-        transcription passes its acceptance test. Any mismatch is a
-        finding: either a transcription error (fix and rerun) or a
-        genuine discrepancy with the paper (investigate by hand; this
-        is how the engine earns its keep as an auditor).
+Step 6. Run (`python check.py library/INSTANCE.json`). Exact
+        reproduction of all published rationals = the transcription
+        passes its acceptance test. Any mismatch is a finding: either
+        a transcription error (fix and rerun) or a genuine discrepancy
+        with the paper (investigate by hand; this is how the engine
+        earns its keep as an auditor). The run writes its full
+        evidence to INSTANCE.certify.txt; commit it.
+Step 7. Mutation census (`check.py ... --deep`, or mutate.py and
+        mutant_census.py standalone). Every coefficient is perturbed
+        both ways; each survivor gets a computed reason code. Add the
+        slices the census demands until no BRACKETABLE survivor
+        remains. What survives then is the paper's certified slack,
+        machine-checked -- do not classify survivors by hand, the
+        census exists because hand classification was falsified.
+Step 8. Audit note (INSTANCE_AUDIT.md). Hand-written, not tool
+        output: linearity verdict, substitutions with the pin/free
+        decision for each, facet map, errors found and whether they
+        propagate, ablations, survivor classes -- citing the committed
+        report for every witness location asserted.
 
 The protocol's failure modes concentrate in steps 3 and 4 — telling
 constraints from conventions, and spotting the linear regime's edge.

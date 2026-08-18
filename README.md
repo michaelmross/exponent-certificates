@@ -1,10 +1,6 @@
-# Exponent Threshold Certification
-[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21984728-blue.svg)](https://doi.org/10.5281/zenodo.21984728)
-[![check-library](https://github.com/michaelmross/exponent-certificates/actions/workflows/check.yml/badge.svg)](https://github.com/michaelmross/exponent-certificates/actions/workflows/check.yml)
+# exponent-certificates
 
 A tool for certifying published exponent thresholds in analytic number theory as exact linear-programming facets, together with a growing library of certified papers.
-
-Companion note: [A Tool for Certifying Exponent Thresholds as Exact Linear-Programming Facets](https://doi.org/10.5281/zenodo.21986255)
 
 Many theorems in this area have the shape "the result holds for c below some odd-looking fraction." That fraction is almost never explained. It is the output of a system of competing inequalities, and the paper typically prints the winning condition and moves on. This repository turns the system of inequalities itself into data (a JSON file), and an engine (`certify.py`) recomputes the threshold from that data by exact rational arithmetic, with no floating point anywhere. When the recomputed threshold matches the published one at every tested parameter value, the certificate passes. When it does not, either the transcription is wrong or the paper is, and both outcomes have happened.
 
@@ -14,7 +10,7 @@ A certificate does more than confirm the headline number. It identifies which co
 
 The engine and its harness are `certify.py` (the certifier), `mutate.py` (perturbs every coefficient and reruns), `mutant_census.py` (classifies why each perturbation was or was not caught), and `check.py` (runs everything). Instances live in `library/`. The CI configuration in `.github/workflows/check.yml` runs the fast pass on every push. `SCHEMA.md` documents the instance format and the transcription discipline.
 
-Each certified paper contributes an instance file such as `heath_brown.json`, an audit note such as `heath_brown_AUDIT.md` recording what was found, and two machine-generated result files, `*.mutation.tsv` and `*.census.tsv`. Two instances whose names begin with `CONTROL` are deliberately broken and must fail. They exist to prove the engine can detect error, and the workflow treats their failure as success.
+Each certified paper contributes an instance file such as `heath_brown.json`, an audit note such as `heath_brown_AUDIT.md` recording what was found, and three machine-generated result files: the full certification report `*.certify.txt`, and the mutation results `*.mutation.tsv` and `*.census.tsv`. Two instances whose names begin with `CONTROL` are deliberately broken and must fail. They exist to prove the engine can detect error, and the workflow treats their failure as success.
 
 ## Command reference
 
@@ -34,7 +30,7 @@ python check.py library/foo.json         one instance, certify only.
 python check.py library/foo.json --deep  one instance, full pipeline.
 ```
 
-`check.py` also lints before certifying (structural JSON problems fail loudly, style problems warn) and flags any committed `.mutation.tsv` whose row count no longer matches the instance, so a stale result file fails the consistency check rather than silently documenting an old version. An instance whose name begins with `CONTROL` must fail certification, and the checker reports it as OK only when the engine actually ran and mismatched.
+`check.py` also lints before certifying (structural JSON problems fail loudly, style problems warn) and flags any committed `.mutation.tsv` whose row count no longer matches the instance, so a stale result file fails the consistency check rather than silently documenting an old version. Every certify run writes its full report to `INSTANCE.certify.txt` beside the instance (suppress with `--no-report`): witness locations, binding atoms, and per-slice checks, committed like the TSVs so every fact an audit note cites is a diffable artifact. Because the output is deterministic, the checker treats any byte change against the committed report as a failure even when the verdict still passes, which catches a moved witness or a changed check count that the verdict alone cannot see. An instance whose name begins with `CONTROL` must fail certification, and the checker reports it as OK only when the engine actually ran and mismatched.
 
 The two underlying tools are standalone, and there are two situations where running them directly is the right choice. First, long mutation runs: `python mutate.py library/foo.json --chunk 2/4` runs a quarter of the mutants and appends to the TSV, which is how large instances are done under a timeout. Note that mutate.py always appends, by design, so delete the TSV before a fresh un-chunked run (`--deep` does this for you). Second, the bracket-placement loop: `python mutant_census.py library/foo.json` recomputes every verdict from the instance alone, without needing a mutation run, so while placing slices the cheap cycle is edit, census, check that BRACKETABLE is gone, repeat, and only then one `--deep` to regenerate the committed TSVs.
 

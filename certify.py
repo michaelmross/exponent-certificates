@@ -285,7 +285,27 @@ def run_coverage(inst, args):
     else:
         print(f"CERTIFICATE FAILED -- {state['fails']} of "
               f"{state['checks']} checks mismatch (see MISMATCH lines)")
+    if isinstance(sys.stdout, _Tee):
+        sys.stdout.close()
     sys.exit(0 if state["ok"] else 1)
+
+
+class _Tee:
+    """Duplicate stdout into INSTANCE.certify.txt. The report is the
+    engine's full evidence (witness locations, binding atoms, per-slice
+    checks), committed beside the instance like the mutation TSVs, so
+    every fact an audit note cites is a diffable artifact. Output is
+    deterministic, so a byte change in the report means the certificate
+    changed even when the verdict did not."""
+    def __init__(self, stream, path):
+        self.stream, self.f = stream, open(path, "w")
+    def write(self, s):
+        self.stream.write(s); self.f.write(s)
+    def flush(self):
+        self.stream.flush(); self.f.flush()
+    def close(self):
+        sys.stdout = self.stream
+        self.f.close()
 
 
 def main():
@@ -295,7 +315,13 @@ def main():
                     help="slice value (comma-separated if multiparameter) "
                          "at which to print the minimizing witness")
     ap.add_argument("--no-ablations", action="store_true")
+    ap.add_argument("--no-report", action="store_true",
+                    help="do not write INSTANCE.certify.txt")
     args = ap.parse_args()
+
+    if not args.no_report:
+        sys.stdout = _Tee(sys.stdout,
+                          args.instance.rsplit(".json", 1)[0] + ".certify.txt")
 
     with open(args.instance) as f:
         inst = Instance(json.load(f))
@@ -368,6 +394,8 @@ def main():
     else:
         print(f"CERTIFICATE FAILED -- {fails} of {checks} slices "
               f"mismatch (see MISMATCH lines)")
+    if isinstance(sys.stdout, _Tee):
+        sys.stdout.close()
     sys.exit(0 if ok else 1)
 
 

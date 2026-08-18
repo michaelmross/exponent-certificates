@@ -138,21 +138,31 @@ def one(path, do_mutate=False):
         return "LINT FAILED: " + "; ".join(problems), False, ""
     note = ("  [lint: " + "; ".join(warnings) + "]") if warnings else ""
     ctrl = d.get("name", "").startswith("CONTROL")
+    report = path.rsplit(".json", 1)[0] + ".certify.txt"
+    before = open(report).read() if os.path.exists(report) else None
     r = run([PY, tool("certify.py"), os.path.abspath(path)])
     passed = (r.returncode == 0)
+    drift = ""
+    if before is not None and os.path.exists(report) and open(report).read() != before:
+        # Deterministic output: any byte change means the certificate's
+        # evidence changed (witness location, binding atom, check count),
+        # even if the verdict did not. Finer than the verdict alone.
+        drift = "  !! report drifted from committed version (git diff " + os.path.basename(report) + ")"
     if ctrl:
         if not passed and not r.stdout.strip():
             return "ENGINE DID NOT RUN (control verdict meaningless)", False, ""
         status = "OK (control failed as required)" if not passed else "BROKEN CONTROL: it passed"
-        return status + note, not passed, ""
+        return status + note + drift, not passed and not drift, ""
     if not passed:
         if not r.stdout.strip():
             err = r.stderr.strip().splitlines()[-1] if r.stderr.strip() else "no output"
             return f"ENGINE DID NOT RUN ({err})", False, ""
         tail = "\n".join(r.stdout.strip().splitlines()[-6:])
         return "CERTIFY FAILED" + note, False, tail
-    detail = r.stdout.strip().splitlines()[-1]
+    detail = r.stdout.strip().splitlines()[-1] + drift
     stale = tsv_stale(path, d)
+    if drift and not do_mutate:
+        return detail + note, False, ""
     if stale and not do_mutate:
         return detail + note + "  !! " + stale, False, ""
     if do_mutate:

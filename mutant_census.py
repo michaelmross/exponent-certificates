@@ -4,7 +4,7 @@ provenance and computed survivor classification.
 
 For every mutant of an instance (same generator as mutate.py), computes by
 exact 1-D interval arithmetic the witness-existence boundary set of base
-and mutant in every configuration (base toolkit + each ablation), then:
+and mutant in every configuration (base toolkit + each ablation), then: 
 
   killed    -> records the first (slice, configuration) whose expectation
                flips, and the boundary that moved.

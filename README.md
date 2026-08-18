@@ -1,4 +1,6 @@
-# exponent-certificates
+# Exponent Threshold Certification
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21984728-blue.svg)](https://doi.org/10.5281/zenodo.21984728)
+[![check-library](https://github.com/michaelmross/exponent-certificates/actions/workflows/check.yml/badge.svg)](https://github.com/michaelmross/exponent-certificates/actions/workflows/check.yml)
 
 A tool for certifying published exponent thresholds in analytic number theory as exact linear-programming facets, together with a growing library of certified papers.
 

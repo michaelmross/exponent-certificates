@@ -4,7 +4,7 @@ An INSTANCE is a JSON file declaring a sieve/coverage optimization problem
 in exact rational arithmetic. The engine (certify.py) is problem-agnostic:
 everything problem-specific lives in the instance. Two worked instances
 accompany this spec: `jn_tail.json` (level mode) and `rs_pns.json`
-(coverage mode).
+(coverage mode). 
 
 ## 1. File anatomy
 

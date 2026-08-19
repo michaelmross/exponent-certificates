@@ -52,4 +52,4 @@ The word workflow here means the human procedure. The checker above mechanizes s
 
 ## What a passing certificate does and does not assert
 
-It asserts that the declared threshold is exactly the boundary of witness existence for the transcribed system, at every slice, in exact arithmetic, and that the killed coefficients are pinned against perturbation. It does not assert that the transcription faithfully encodes the paper. That soundness obligation belongs to the instance author and is discharged in prose, atom by atom, in the provenance fields. The engine certifies the arithmetic of the reachable set. It cannot certify the reach of mathematics.
+It asserts that the declared threshold is exactly the boundary of witness existence for the transcribed system, at every slice, in exact arithmetic, and that the killed coefficients are pinned against perturbation. It does not assert that the transcription faithfully encodes the paper. That soundness obligation belongs to the instance author.

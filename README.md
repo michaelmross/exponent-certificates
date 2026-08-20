@@ -10,7 +10,7 @@ Many theorems in this area have the shape "the result holds for c below some odd
 
 A certificate does more than confirm the headline number. It identifies which condition actually produces the threshold (the binding facet), which printed conditions turn out never to matter (slack, or vacuous), what happens when each estimate is deleted (ablations), and which coefficients the certificate genuinely pins down as opposed to merely carries (the mutation census). The audit notes in this repository record several findings of exactly these kinds in the certified papers, none affecting the theorems, all invisible without doing this.
 
-## What is in the repository
+## What's in the repository
 
 The engine and its harness are `certify.py` (the certifier), `mutate.py` (perturbs every coefficient and reruns), `mutant_census.py` (classifies why each perturbation was or was not caught), and `check.py` (runs everything). JSON instances live in `library/`. The CI configuration in `.github/workflows/check.yml` runs the fast pass on every push. `SCHEMA.md` documents the instance format and the transcription discipline.
 

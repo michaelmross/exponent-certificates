@@ -36,9 +36,9 @@ python check.py library/foo.json --deep    One instance, full pipeline.
 
 The two underlying tools are standalone, and there are two situations where running them directly is the right choice. First, long mutation runs: `python mutate.py library/foo.json --chunk 2/4` runs a quarter of the mutants and appends to the TSV, which is how large instances are done under a timeout. Note that mutate.py always appends, by design, so delete the TSV before a fresh un-chunked run (`--deep` does this for you). Second, the bracket-placement loop: `python mutant_census.py library/foo.json` recomputes every verdict from the instance alone, without needing a mutation run, so while placing slices the cheap cycle is edit, census, check that BRACKETABLE is gone, repeat, and only then one `--deep` to regenerate the committed TSVs.
 
-## The workflow for certifying a new paper
+## The workflow for certifying a new or published paper
 
-The word workflow here means the human procedure. The tool automates steps 2 and 4 of it; steps 1, 3 and 5 cannot be mechanized and are the actual work.
+*Workflow* means the human procedure. The tool automates steps 2 and 4.
 
 **Step 1, Transcribe.** Read the source document and extract every inequality that participates in the threshold, writing each as a linear constraint in the block coordinates with a right-hand side affine in the parameter. Record the paper's own design substitutions (a fixed exponent pair, a truncation height, a splitting parameter) and either hard-code the value as a constant or promote it to a block variable to be certified. The rules for doing this are in `SCHEMA.md`, and the existing JSON instances are the worked examples. A capable AI assistant can be tasked with executing this procedure.
 

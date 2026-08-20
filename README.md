@@ -38,11 +38,11 @@ The two underlying tools are standalone, and there are two situations where runn
 
 ## The workflow for certifying a new paper
 
-The word workflow here means the human procedure. The checker above mechanizes steps 2 and 4 of it; steps 1, 3 and 5 cannot be mechanized and are the actual work.
+The word workflow here means the human procedure. The tool automates steps 2 and 4 of it; steps 1, 3 and 5 cannot be mechanized and are the actual work.
 
 **Step 1, Transcribe.** Read the source document and extract every inequality that participates in the threshold, writing each as a linear constraint in the block coordinates with a right-hand side affine in the parameter. Record the paper's own design substitutions (a fixed exponent pair, a truncation height, a splitting parameter) and either hard-code the value as a constant or promote it to a block variable to be certified. The rules for doing this are in `SCHEMA.md`, and the existing JSON instances are the worked examples. A capable AI assistant can be tasked with executing this procedure.
 
-**Step 2, Certify.** Write the instance JSON with the published threshold declared in `expected_coverage` (or `expected_profile` for min-max instances), pick slices that include the threshold itself, values tightly bracketing it, every runner-up facet, and any validity edges. Then `python check.py library/myinstance.json`. A mismatch at this stage means a transcription error or a paper error, and telling them apart is step 1's problem, not the engine's.
+**Step 2, Certify.** Execute `python check.py library/myinstance.json`. The engine recomputes everything the instance claims and compares against what it declares, in exact arithmetic, and the run either passes or names the first slice where expectation and arithmetic part ways. A mismatch means a transcription error or a paper error, and telling them apart is step 1's author's problem, not the engine's: the engine cannot distinguish a wrong encoding from a wrong paper, only a system from its declared threshold.
 
 **Step 3, Cross-check if warranted.** For a result that matters, reproduce the verdict by an independent route before trusting it. For a one-variable coverage instance the natural route is a direct interval scan: At each fixed parameter value every constraint collapses to an interval condition on the variable, so witness existence is just the nonemptiness of an intersection of intervals, computable in a few dozen lines of exact rational arithmetic written from `SCHEMA.md` rather than from `certify.py`'s code. Agreement between two independent implementations tests the specification; running the same engine twice tests nothing.
 

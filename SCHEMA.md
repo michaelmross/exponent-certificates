@@ -101,11 +101,12 @@ the point of the exercise.
 The engine certifies the arithmetic of the encoded system exactly. It
 does NOT certify that the encoding is faithful to the paper. The
 instance author owes, in `comment` and per-tool `provenance`:
-
+```
 1. RELAXATIONS: any tool condition deliberately omitted or weakened,
    with the direction of the resulting bound (omissions make failure
    easier, so certified thresholds are conservative), and the hand
    argument that closes the gap on the relevant region.
+
 2. DESIGN CHOICES: parameters the paper fixes rather than quantifies
    (e.g. alpha = 1-gamma in Rivat-Sargos Section 5). Each forces a
    documented decision, never a silent one. PIN it (a constant, with
@@ -118,14 +119,16 @@ instance author owes, in `comment` and per-tool `provenance`:
    be freed gets a VARIANT instance at a different pin
    (guo_guo_lu_A7.json), which performs the optimality test the LP
    cannot.
+
 3. EDGE CONVENTIONS: window edges the paper covers by construction
    (eta-shifted endpoints) carry no fail atom; only genuine caps do.
    Say which edges were so treated.
+
 4. SCOPE: what lies outside the linear regime entirely (numerical
    Buchstab integration, zero-density inputs, mean-value theorems).
    The instance must not silently span such a layer; certify the
    linear layer and state the boundary.
-
+```
 ## 6. Transcription protocol (human or AI-assisted)
 
 The construction of an instance from a paper is mechanical enough to
@@ -133,22 +136,27 @@ delegate — to a careful reader or to an AI under these guidelines —
 BECAUSE the acceptance test is self-checking: an unfaithful atom table
 has no reason to reproduce the paper's exact published rationals, let
 alone several of them simultaneously under ablation.
-
+```text
 Step 1. Identify the block coordinates (exponent variables) and slice
         parameter, and the decomposition pieces with their regions.
+        
 Step 2. Harvest atoms: every statement of the form "the estimate is
         valid / the term is negligible provided X <= x^{f(param)}"
         with f rational-affine. Record each with its source location.
+        
 Step 3. Classify: genuine cap vs design choice vs constructed edge
         (section 5). Only genuine caps become fail atoms.
+        
 Step 4. Detect scope boundaries: any condition that is not
         rational-affine in the declared coordinates (transcendental
         constants, numerically evaluated positivity, zero-density
         exponents) marks the edge of the certifiable layer. Stop there
         and document it.
+        
 Step 5. Encode, choosing slices that bracket every published threshold,
         including thresholds of the paper's intermediate theorems as
         ablations where the toolkit difference is a tool subset.
+        
 Step 6. Run (`python check.py library/INSTANCE.json`). Exact
         reproduction of all published rationals = the transcription
         passes its acceptance test. Any mismatch is a finding: either
@@ -156,6 +164,7 @@ Step 6. Run (`python check.py library/INSTANCE.json`). Exact
         with the paper (investigate by hand; this is how the engine
         earns its keep as an auditor). The run writes its full
         evidence to INSTANCE.certify.txt; commit it.
+        
 Step 7. Mutation census (`check.py ... --deep`, or mutate.py and
         mutant_census.py standalone). Every coefficient is perturbed
         both ways; each survivor gets a computed reason code. Add the
@@ -163,12 +172,13 @@ Step 7. Mutation census (`check.py ... --deep`, or mutate.py and
         remains. What survives then is the paper's certified slack,
         machine-checked -- do not classify survivors by hand, the
         census exists because hand classification was falsified.
+        
 Step 8. Audit note (INSTANCE_AUDIT.md). Hand-written, not tool
         output: linearity verdict, substitutions with the pin/free
         decision for each, facet map, errors found and whether they
         propagate, ablations, survivor classes -- citing the committed
         report for every witness location asserted.
-
+```
 The protocol's failure modes concentrate in steps 3 and 4 — telling
 constraints from conventions, and spotting the linear regime's edge.
 Those are judgment calls; the run in step 6 is arithmetic. That split
